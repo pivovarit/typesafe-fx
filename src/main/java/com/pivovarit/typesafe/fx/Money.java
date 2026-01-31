@@ -1,6 +1,7 @@
 package com.pivovarit.typesafe.fx;
 
 import com.pivovarit.typesafe.fx.currency.TypedCurrency;
+import com.pivovarit.typesafe.fx.rate.FxForwardRate;
 import com.pivovarit.typesafe.fx.rate.FxRate;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -49,6 +50,10 @@ public record Money<T extends TypedCurrency>(BigDecimal amount, T currency) {
     public Money<T> multiply(BigDecimal factor) {
         Objects.requireNonNull(factor, "factor");
         return from(amount.multiply(factor), currency);
+    }
+
+    public <R extends TypedCurrency> Money<R> convert(FxForwardRate<T, R> rate) {
+        return rate.exchange(this);
     }
 
     public <R extends TypedCurrency> Money<R> convert(FxRate<T, R> rate) {
