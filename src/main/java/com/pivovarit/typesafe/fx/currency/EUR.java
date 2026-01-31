@@ -3,7 +3,7 @@ package com.pivovarit.typesafe.fx.currency;
 import java.util.Currency;
 import java.util.Objects;
 
-public record EUR(Currency currency) implements ReifiedCurrency {
+public record EUR(Currency currency) implements TypedCurrency {
     public EUR {
         Objects.requireNonNull(currency, "Currency cannot be null");
         if (!currency.getCurrencyCode().equals("EUR")) {

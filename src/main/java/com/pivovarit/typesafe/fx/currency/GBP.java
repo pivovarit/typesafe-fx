@@ -3,7 +3,7 @@ package com.pivovarit.typesafe.fx.currency;
 import java.util.Currency;
 import java.util.Objects;
 
-public record GBP(Currency currency) implements ReifiedCurrency {
+public record GBP(Currency currency) implements TypedCurrency {
     public GBP {
         Objects.requireNonNull(currency, "Currency cannot be null");
         if (!currency.getCurrencyCode().equals("GBP")) {

@@ -3,7 +3,7 @@ package com.pivovarit.typesafe.fx.currency;
 import java.util.Currency;
 import java.util.Set;
 
-public interface ReifiedCurrency {
+public interface TypedCurrency {
     EUR EUR = new EUR(Currency.getInstance("EUR"));
     USD USD = new USD(Currency.getInstance("USD"));
     CHF CHF = new CHF(Currency.getInstance("CHF"));
@@ -12,7 +12,7 @@ public interface ReifiedCurrency {
 
     Currency currency();
 
-    static ReifiedCurrency from(String code) {
+    static TypedCurrency from(String code) {
         return switch (code) {
             case "EUR" -> new EUR(Currency.getInstance(code));
             case "USD" -> new USD(Currency.getInstance(code));
@@ -23,7 +23,7 @@ public interface ReifiedCurrency {
         };
     }
 
-    static Set<ReifiedCurrency> supportedCurrencies() {
+    static Set<TypedCurrency> supportedCurrencies() {
         return Set.of(EUR, USD, CHF, GBP, PLN);
     }
 }
