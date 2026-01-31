@@ -1,7 +1,7 @@
 package com.pivovarit.typesafe.fx.rate;
 
 import com.pivovarit.typesafe.fx.DirectionalCurrencyPair;
-import com.pivovarit.typesafe.fx.MoneyAmount;
+import com.pivovarit.typesafe.fx.Money;
 import com.pivovarit.typesafe.fx.currency.ReifiedCurrency;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -37,12 +37,12 @@ public record FxRate<F extends ReifiedCurrency, T extends ReifiedCurrency>(F fro
         return new FxRate<>(pair.sell(), pair.buy(), rate);
     }
 
-    public MoneyAmount<T> exchange(MoneyAmount<F> money) {
+    public Money<T> exchange(Money<F> money) {
         Objects.requireNonNull(money, "money");
         if (money.currency() != from) {
             throw new IllegalArgumentException("Money currency " + money.currency() + " does not match rate.from " + from);
         }
-        return new MoneyAmount<>(money.amount().multiply(rate), to);
+        return new Money<>(money.amount().multiply(rate), to);
     }
 
     public FxRate<T, F> invert() {

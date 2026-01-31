@@ -18,8 +18,8 @@ class FxRateTest {
     void example_1() {
         DirectionalCurrencyPair<USD, EUR> usdeur = DirectionalCurrencyPair.of(ReifiedCurrency.USD, ReifiedCurrency.EUR);
 
-        MoneyAmount<USD> usdAmount = MoneyAmount.from(BigDecimal.TEN, ReifiedCurrency.USD);
-        MoneyAmount<EUR> eurAmount = MoneyAmount.from(BigDecimal.TEN, ReifiedCurrency.EUR);
+        Money<USD> usdAmount = Money.from(BigDecimal.TEN, ReifiedCurrency.USD);
+        Money<EUR> eurAmount = Money.from(BigDecimal.TEN, ReifiedCurrency.EUR);
 
         FxRate<USD, EUR> rate1 = FxRate.from(new BigDecimal("0.84"), ReifiedCurrency.USD, ReifiedCurrency.EUR);
         FxRate<USD, EUR> rate2 = FxRate.from(new BigDecimal("0.84"), usdeur);
@@ -38,11 +38,11 @@ class FxRateTest {
     void example_2_untyped() {
         ReifiedCurrency currency1 = ReifiedCurrency.from("CHF");
         ReifiedCurrency currency2 = ReifiedCurrency.from("GBP");
-        MoneyAmount<ReifiedCurrency> chf = MoneyAmount.from(BigDecimal.TEN, currency1);
-        MoneyAmount<ReifiedCurrency> gbp = MoneyAmount.from(BigDecimal.TEN, currency2);
+        Money<ReifiedCurrency> chf = Money.from(BigDecimal.TEN, currency1);
+        Money<ReifiedCurrency> gbp = Money.from(BigDecimal.TEN, currency2);
 
         assertThatThrownBy(() -> {
-            MoneyAmount<ReifiedCurrency> ignored = chf.add(gbp);
+            Money<ReifiedCurrency> ignored = chf.add(gbp);
         }).isExactlyInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("Currency mismatch: CHF vs GBP");
     }
