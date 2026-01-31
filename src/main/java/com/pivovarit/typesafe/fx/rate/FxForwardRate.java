@@ -1,26 +1,25 @@
-package com.pivovarit.typesafe.fx;
+package com.pivovarit.typesafe.fx.rate;
 
+import com.pivovarit.typesafe.fx.DirectionalCurrencyPair;
 import com.pivovarit.typesafe.fx.currency.ReifiedCurrency;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public record FxForwardRate<F extends ReifiedCurrency, T extends ReifiedCurrency>(F from, T to, BigDecimal rate, LocalDate valueDate) {
+public record FxForwardRate<F extends ReifiedCurrency, T extends ReifiedCurrency>(FxRate<F, T> rate, LocalDate valueDate) {
     public FxForwardRate {
-        Objects.requireNonNull(from, "from");
-        Objects.requireNonNull(to, "to");
+        Objects.requireNonNull(rate, "rate");
         Objects.requireNonNull(rate, "rate");
         Objects.requireNonNull(valueDate, "valueDate");
-        if (rate.signum() <= 0) {
-            throw new IllegalArgumentException("rate must be > 0");
-        }
     }
 
     public static <T extends ReifiedCurrency, R extends ReifiedCurrency> FxForwardRate<T, R> from(BigDecimal rate, T from, R to, LocalDate valueDate) {
-        return new FxForwardRate<>(from, to, rate, valueDate);
+        FxRate<T, R> fxRate = FxRate.from(rate, from, to);
+        return new FxForwardRate<>(fxRate, valueDate);
     }
 
     public static <T extends ReifiedCurrency, R extends ReifiedCurrency> FxForwardRate<T, R> from(BigDecimal rate, DirectionalCurrencyPair<T, R> pair, LocalDate valueDate) {
-        return new FxForwardRate<>(pair.sell(), pair.buy(), rate, valueDate);
+        FxRate<T, R> fxRate = FxRate.from(rate, pair.sell(), pair.buy());
+        return new FxForwardRate<>(fxRate, valueDate);
     }
 }

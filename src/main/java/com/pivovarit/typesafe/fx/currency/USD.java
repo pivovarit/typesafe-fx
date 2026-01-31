@@ -10,4 +10,9 @@ public record USD(Currency currency) implements ReifiedCurrency {
             throw new IllegalArgumentException("Currency must be USD");
         }
     }
+
+    @Override
+    public String toString() {
+        return currency.toString();
+    }
 }

@@ -1,5 +1,7 @@
-package com.pivovarit.typesafe.fx;
+package com.pivovarit.typesafe.fx.rate;
 
+import com.pivovarit.typesafe.fx.DirectionalCurrencyPair;
+import com.pivovarit.typesafe.fx.MoneyAmount;
 import com.pivovarit.typesafe.fx.currency.ReifiedCurrency;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -17,6 +19,14 @@ public record FxRate<F extends ReifiedCurrency, T extends ReifiedCurrency>(F fro
         if (rate.signum() <= 0) {
             throw new IllegalArgumentException("rate must be > 0");
         }
+    }
+
+    public static <T extends ReifiedCurrency, R extends ReifiedCurrency> FxRate<T, R> from(String rate, T from, R to) {
+        return new FxRate<>(from, to, new BigDecimal(rate));
+    }
+
+    public static <T extends ReifiedCurrency, R extends ReifiedCurrency> FxRate<T, R> from(String rate, DirectionalCurrencyPair<T, R> pair) {
+        return new FxRate<>(pair.sell(), pair.buy(), new BigDecimal(rate));
     }
 
     public static <T extends ReifiedCurrency, R extends ReifiedCurrency> FxRate<T, R> from(BigDecimal rate, T from, R to) {

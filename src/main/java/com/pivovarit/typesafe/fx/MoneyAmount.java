@@ -1,6 +1,7 @@
 package com.pivovarit.typesafe.fx;
 
 import com.pivovarit.typesafe.fx.currency.ReifiedCurrency;
+import com.pivovarit.typesafe.fx.rate.FxRate;
 import java.math.BigDecimal;
 import java.util.Objects;
 

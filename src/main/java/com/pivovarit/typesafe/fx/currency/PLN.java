@@ -10,4 +10,9 @@ public record PLN(Currency currency) implements ReifiedCurrency {
             throw new IllegalArgumentException("Currency must be PLN");
         }
     }
+
+    @Override
+    public String toString() {
+        return currency.toString();
+    }
 }

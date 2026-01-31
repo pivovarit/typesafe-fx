@@ -10,4 +10,9 @@ public record CHF(Currency currency) implements ReifiedCurrency {
             throw new IllegalArgumentException("Currency must be CHF");
         }
     }
+
+    @Override
+    public String toString() {
+        return currency.toString();
+    }
 }
