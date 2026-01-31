@@ -1,5 +1,8 @@
 # typesafe-fx (prototype)
 
+[![ci](https://github.com/pivovarit/typesafe-fx/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pivovarit/typesafe-fx/actions/workflows/ci.yml)
+[![pitest](https://github.com/pivovarit/typesafe-fx/actions/workflows/pitest.yml/badge.svg?branch=main)](http://pivovarit.github.io/typesafe-fx)
+
 A tiny Java prototype that explores **type-safe FX conversions** using *reified* currency types.
 
 Instead of representing money as `(amount, "EUR")` and hoping you don’t accidentally add EUR to USD or apply the wrong FX rate, `typesafe-fx` models:
