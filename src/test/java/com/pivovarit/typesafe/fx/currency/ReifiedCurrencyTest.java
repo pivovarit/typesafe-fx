@@ -9,11 +9,11 @@ import org.junit.jupiter.api.TestFactory;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ReifiedCurrencyTest {
+class TypedCurrencyTest {
 
     @TestFactory
     Stream<DynamicTest> shouldReturnCurrencyCodeToString() {
-        return ReifiedCurrency.supportedCurrencies()
+        return TypedCurrency.supportedCurrencies()
           .stream()
           .map(ccy -> {
               return DynamicTest.dynamicTest(ccy.currency().getCurrencyCode(), () -> {
@@ -24,7 +24,7 @@ class ReifiedCurrencyTest {
 
     @TestFactory
     Stream<DynamicTest> currencyCreationValidationTests() {
-        return ReifiedCurrency.supportedCurrencies()
+        return TypedCurrency.supportedCurrencies()
           .stream()
           .map(ccy -> {
               return DynamicTest.dynamicTest(ccy.currency().getCurrencyCode(), () -> {
@@ -38,7 +38,7 @@ class ReifiedCurrencyTest {
 
     @TestFactory
     Stream<DynamicTest> currencyCreationNullValidationTests() {
-        return ReifiedCurrency.supportedCurrencies()
+        return TypedCurrency.supportedCurrencies()
           .stream()
           .map(ccy -> {
               return DynamicTest.dynamicTest(ccy.currency().getCurrencyCode(), () -> {

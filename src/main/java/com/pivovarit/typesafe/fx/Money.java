@@ -1,17 +1,17 @@
 package com.pivovarit.typesafe.fx;
 
-import com.pivovarit.typesafe.fx.currency.ReifiedCurrency;
+import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.rate.FxRate;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public record Money<T extends ReifiedCurrency>(BigDecimal amount, T currency) {
+public record Money<T extends TypedCurrency>(BigDecimal amount, T currency) {
 
-    public static <T extends ReifiedCurrency> Money<T> from(BigDecimal amount, T currency) {
+    public static <T extends TypedCurrency> Money<T> from(BigDecimal amount, T currency) {
         return new Money<>(amount, currency);
     }
 
-    public static <T extends ReifiedCurrency> Money<T> from(String amount, T currency) {
+    public static <T extends TypedCurrency> Money<T> from(String amount, T currency) {
         return new Money<>(new BigDecimal(amount), currency);
     }
 
@@ -51,11 +51,11 @@ public record Money<T extends ReifiedCurrency>(BigDecimal amount, T currency) {
         return from(amount.multiply(factor), currency);
     }
 
-    public <R extends ReifiedCurrency> Money<R> convert(FxRate<T, R> rate) {
+    public <R extends TypedCurrency> Money<R> convert(FxRate<T, R> rate) {
         return rate.exchange(this);
     }
 
-    private void requireSameCurrency(Money<? extends ReifiedCurrency> other) {
+    private void requireSameCurrency(Money<? extends TypedCurrency> other) {
         if (!currency.currency().equals(other.currency().currency())) {
             var msg = "Currency mismatch: %s vs %s".formatted(currency.currency().getCurrencyCode(), other.currency()
               .currency().getCurrencyCode());
