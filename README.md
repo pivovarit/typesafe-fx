@@ -7,6 +7,7 @@ Instead of representing money as `(amount, "EUR")` and hoping you don’t accide
 - `ReifiedCurrency` - a type-safe representation of a currency
 - `MoneyAmount<EUR>` - money *in* a specific currency type
 - `FxRate<EUR, USD>` - a rate that can only exchange `MoneyAmount<EUR>` into `MoneyAmount<USD>`
+- `FxForwardRate<EUR, USD>` - a rate that can only exchange `MoneyAmount<EUR>` into `MoneyAmount<USD>` on a given date
 
 The goal: **push currency correctness into the type system** (at least as far as Java’s generics will allow) while still being ergonomic.
 
@@ -18,6 +19,8 @@ MoneyAmount<EUR> eurAmount = MoneyAmount.from(BigDecimal.TEN, ReifiedCurrency.EU
 
 FxRate<USD, EUR> rate1 = FxRate.from(new BigDecimal("0.84"), ReifiedCurrency.USD, ReifiedCurrency.EUR);
 FxRate<USD, EUR> rate2 = FxRate.from(new BigDecimal("0.84"), usdeur);
+
+FxForwardRate<USD, EUR> fxForwardRate = FxForwardRate.from(new BigDecimal("0.85"), usdeur, LocalDate.parse("2030-01-01"));
 
 FxRate<EUR, USD> inverted = rate1.invert();
 
