@@ -33,3 +33,11 @@ switch (currency) {
     default -> System.out.println("not chf");
 }
 ```
+
+When type can't be determined, rely on runtime checks:
+```
+MoneyAmount<ReifiedCurrency> chf = MoneyAmount.from(BigDecimal.TEN, ReifiedCurrency.from("CHF"));
+MoneyAmount<ReifiedCurrency> gbp = MoneyAmount.from(BigDecimal.TEN, ReifiedCurrency.from("GBP"));
+
+MoneyAmount<ReifiedCurrency> result = chf.add(gbp); // exception!
+```

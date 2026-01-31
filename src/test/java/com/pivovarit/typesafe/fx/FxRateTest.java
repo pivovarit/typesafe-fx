@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 class FxRateTest {
 
     @Test
@@ -28,5 +30,18 @@ class FxRateTest {
             case CHF chf -> System.out.println(chf);
             default -> System.out.println("not chf");
         }
+    }
+
+    @Test
+    void example_2_untyped() {
+        ReifiedCurrency currency1 = ReifiedCurrency.from("CHF");
+        ReifiedCurrency currency2 = ReifiedCurrency.from("GBP");
+        MoneyAmount<ReifiedCurrency> chf = MoneyAmount.from(BigDecimal.TEN, currency1);
+        MoneyAmount<ReifiedCurrency> gbp = MoneyAmount.from(BigDecimal.TEN, currency2);
+
+        assertThatThrownBy(() -> {
+              MoneyAmount<ReifiedCurrency> ignored = chf.add(gbp);
+          }).isExactlyInstanceOf(IllegalArgumentException.class)
+          .hasMessageContaining("Currency mismatch: CHF vs GBP");
     }
 }
