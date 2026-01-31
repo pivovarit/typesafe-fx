@@ -9,7 +9,7 @@ import java.math.RoundingMode;
 import java.util.Objects;
 
 /**
- * Typed FX rate: FxRate<F, T> exchanges Money<F> -> Money<T>.
+ * Typed FX rate: {@code FxRate<F, T>} exchanges {@code Money<F>} -> {@code Money<T>}.
  */
 public record FxRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T to, BigDecimal rate) {
     public FxRate {
