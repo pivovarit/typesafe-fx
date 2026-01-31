@@ -10,7 +10,13 @@ public final class MarkToMarket {
     }
 
     public static <F extends TypedCurrency, T extends TypedCurrency> Money<T> derive(FxForwardRate<F, T> bookedRate, FxForwardRate<F, T> marketRate, Money<F> bookedAmount, DealtAction action) {
-        return derive(bookedRate.rate(), marketRate.rate(), bookedAmount, action);
+        Money<T> bookedValue = bookedAmount.convert(bookedRate);
+        Money<T> marketValue = bookedAmount.convert(marketRate);
+
+        return switch (action) {
+            case SELL -> bookedValue.subtract(marketValue);
+            case BUY -> marketValue.subtract(bookedValue);
+        };
     }
 
     public static <F extends TypedCurrency, T extends TypedCurrency> Money<T> derive(FxRate<F, T> bookedRate, FxRate<F, T> marketRate, Money<F> bookedAmount, DealtAction action) {

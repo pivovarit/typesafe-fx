@@ -2,6 +2,7 @@ package com.pivovarit.typesafe.fx;
 
 import com.pivovarit.typesafe.fx.currency.CHF;
 import com.pivovarit.typesafe.fx.currency.EUR;
+import com.pivovarit.typesafe.fx.currency.PLN;
 import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.currency.USD;
 import com.pivovarit.typesafe.fx.rate.FxForwardRate;
@@ -10,9 +11,20 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class FxRateTest {
+
+    @Test
+    void shouldInvert() {
+        FxRate<USD, PLN> rate = FxRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
+        FxRate<PLN, USD> inverted = rate.invert();
+
+        assertThat(inverted.from().equals(rate.to())).isTrue();
+        assertThat(inverted.to().equals(rate.from())).isTrue();
+        assertThat(inverted.rate().compareTo(new BigDecimal("0.25"))).isZero();
+    }
 
     @Test
     void example_1() {
