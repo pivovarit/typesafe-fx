@@ -36,8 +36,6 @@
         <junit.version>6.0.2</junit.version>
         <assertj.version>3.27.7</assertj.version>
         <awaitility.version>4.3.0</awaitility.version>
-        <jmh.version>1.37</jmh.version>
-        <jmh.generator>default</jmh.generator>
     </properties>
 
     <build>
@@ -246,43 +244,6 @@
             </build>
         </profile>
         <profile>
-            <id>jmh</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>3.6.3</version>
-                        <executions>
-                            <execution>
-                                <phase>process-sources</phase>
-                                <goals>
-                                    <goal>java</goal>
-                                </goals>
-                                <configuration>
-                                    <includePluginDependencies>true</includePluginDependencies>
-                                    <mainClass>org.openjdk.jmh.generators.bytecode.JmhBytecodeGenerator</mainClass>
-                                    <arguments>
-                                        <argument>${project.basedir}/target/classes/</argument>
-                                        <argument>${project.basedir}/target/generated-sources/jmh/</argument>
-                                        <argument>${project.basedir}/target/classes/</argument>
-                                        <argument>${jmh.generator}</argument>
-                                    </arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.openjdk.jmh</groupId>
-                                <artifactId>jmh-generator-bytecode</artifactId>
-                                <version>${jmh.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
             <id>doclint</id>
             <build>
                 <plugins>
@@ -315,18 +276,6 @@
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>org.openjdk.jmh</groupId>
-            <artifactId>jmh-core</artifactId>
-            <version>${jmh.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.openjdk.jmh</groupId>
-            <artifactId>jmh-generator-annprocess</artifactId>
-            <version>${jmh.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.17</version>
@@ -334,13 +283,13 @@
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
+            <artifactId>junit-jupiter-params</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
