@@ -4,27 +4,16 @@ import java.util.Currency;
 import java.util.Set;
 
 public interface ReifiedCurrency {
-    EUR EUR = currency("EUR");
-    USD USD = currency("USD");
-    CHF CHF = currency("CHF");
-    GBP GBP = currency("GBP");
-    PLN PLN = currency("PLN");
+    EUR EUR = new EUR(Currency.getInstance("EUR"));
+    USD USD = new USD(Currency.getInstance("USD"));
+    CHF CHF = new CHF(Currency.getInstance("CHF"));
+    GBP GBP = new GBP(Currency.getInstance("GBP"));
+    PLN PLN = new PLN(Currency.getInstance("PLN"));
 
     Currency currency();
 
     static ReifiedCurrency from(String code) {
         return switch (code) {
-            case "EUR" -> new EUR(Currency.getInstance(code));
-            case "USD" -> new USD(Currency.getInstance(code));
-            case "CHF" -> new CHF(Currency.getInstance(code));
-            case "GBP" -> new GBP(Currency.getInstance(code));
-            case "PLN" -> new PLN(Currency.getInstance(code));
-            default -> throw new IllegalArgumentException("Unsupported currency: " + code);
-        };
-    }
-
-    private static <T extends ReifiedCurrency> T currency(String code) {
-        return (T) switch (code) {
             case "EUR" -> new EUR(Currency.getInstance(code));
             case "USD" -> new USD(Currency.getInstance(code));
             case "CHF" -> new CHF(Currency.getInstance(code));
