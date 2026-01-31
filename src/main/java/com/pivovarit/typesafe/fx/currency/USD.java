@@ -15,4 +15,8 @@ public record USD(Currency currency) implements TypedCurrency {
     public String toString() {
         return currency.toString();
     }
+
+    public static USD instance() {
+        return TypedCurrency.USD;
+    }
 }

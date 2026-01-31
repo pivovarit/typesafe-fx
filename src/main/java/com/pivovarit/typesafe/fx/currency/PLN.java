@@ -15,4 +15,8 @@ public record PLN(Currency currency) implements TypedCurrency {
     public String toString() {
         return currency.toString();
     }
+
+    public static PLN instance() {
+        return TypedCurrency.PLN;
+    }
 }
