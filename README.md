@@ -41,3 +41,13 @@ MoneyAmount<ReifiedCurrency> gbp = MoneyAmount.from(BigDecimal.TEN, ReifiedCurre
 
 MoneyAmount<ReifiedCurrency> result = chf.add(gbp); // exception!
 ```
+
+Mark-to-market:
+
+```
+FxRate<USD, PLN> bookedRate = FxRate.from(new BigDecimal("4"), ReifiedCurrency.USD, ReifiedCurrency.PLN);
+FxRate<USD, PLN> marketRate = FxRate.from(new BigDecimal("3.5"), ReifiedCurrency.USD, ReifiedCurrency.PLN);
+MoneyAmount<USD> amount = MoneyAmount.from(new BigDecimal("1000"), ReifiedCurrency.USD);
+
+MoneyAmount<PLN> mtm = MarkToMarket.derive(bookedRate, marketRate, amount, DealtAction.SELL);
+```

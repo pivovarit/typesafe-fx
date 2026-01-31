@@ -4,6 +4,8 @@ import com.pivovarit.typesafe.fx.currency.CHF;
 import com.pivovarit.typesafe.fx.currency.EUR;
 import com.pivovarit.typesafe.fx.currency.ReifiedCurrency;
 import com.pivovarit.typesafe.fx.currency.USD;
+import com.pivovarit.typesafe.fx.rate.FxForwardRate;
+import com.pivovarit.typesafe.fx.rate.FxRate;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
