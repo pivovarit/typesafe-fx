@@ -30,7 +30,6 @@ class TypedCurrencyTest {
               return DynamicTest.dynamicTest(ccy.currency().getCurrencyCode(), () -> {
                   Class<?> cls = Class.forName("com.pivovarit.typesafe.fx.currency.%s".formatted(ccy.getClass().getSimpleName()));
                   Constructor<?> ctor = cls.getDeclaredConstructor(Currency.class);
-                  ctor.setAccessible(true);
                   assertThatThrownBy(() -> ctor.newInstance(Currency.getInstance("XXX"))).hasCauseExactlyInstanceOf(IllegalArgumentException.class);
               });
           });
@@ -44,7 +43,6 @@ class TypedCurrencyTest {
               return DynamicTest.dynamicTest(ccy.currency().getCurrencyCode(), () -> {
                   Class<?> cls = Class.forName("com.pivovarit.typesafe.fx.currency.%s".formatted(ccy.getClass().getSimpleName()));
                   Constructor<?> ctor = cls.getDeclaredConstructor(Currency.class);
-                  ctor.setAccessible(true);
                   assertThatThrownBy(() -> ctor.newInstance((Currency) null)).hasCauseExactlyInstanceOf(NullPointerException.class);
               });
           });
