@@ -19,7 +19,7 @@ public final class MarkToMarket {
 
         return switch (action) {
             case SELL -> bookedValue.subtract(marketValue);
-            case BUY -> bookedValue.subtract(marketValue).negate();
+            case BUY -> marketValue.subtract(bookedValue);
         };
     }
 }
