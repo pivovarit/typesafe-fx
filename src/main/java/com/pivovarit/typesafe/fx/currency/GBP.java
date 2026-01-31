@@ -15,4 +15,8 @@ public record GBP(Currency currency) implements TypedCurrency {
     public String toString() {
         return currency.toString();
     }
+
+    public static GBP instance() {
+        return TypedCurrency.GBP;
+    }
 }

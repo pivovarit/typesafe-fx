@@ -4,6 +4,7 @@ import java.util.Currency;
 import java.util.Objects;
 
 public record CHF(Currency currency) implements TypedCurrency {
+
     public CHF {
         Objects.requireNonNull(currency, "Currency cannot be null");
         if (!currency.getCurrencyCode().equals("CHF")) {
@@ -14,5 +15,9 @@ public record CHF(Currency currency) implements TypedCurrency {
     @Override
     public String toString() {
         return currency.toString();
+    }
+
+    public static CHF instance() {
+        return TypedCurrency.CHF;
     }
 }

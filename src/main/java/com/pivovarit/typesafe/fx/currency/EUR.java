@@ -15,4 +15,8 @@ public record EUR(Currency currency) implements TypedCurrency {
     public String toString() {
         return currency.toString();
     }
+
+    public static EUR instance() {
+        return TypedCurrency.EUR;
+    }
 }
