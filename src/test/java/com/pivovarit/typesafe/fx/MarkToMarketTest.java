@@ -17,8 +17,10 @@ class MarkToMarketTest {
 
         MoneyAmount<USD> amount = MoneyAmount.from("1000", ReifiedCurrency.USD);
 
-        MoneyAmount<PLN> mtm = MarkToMarket.derive(bookedRate, marketRate, amount, DealtAction.SELL);
+        MoneyAmount<PLN> mtmSell = MarkToMarket.derive(bookedRate, marketRate, amount, DealtAction.SELL);
+        MoneyAmount<PLN> mtmBuy = MarkToMarket.derive(bookedRate, marketRate, amount, DealtAction.BUY);
 
-        assertThat(mtm).isEqualTo(MoneyAmount.from("500.0", ReifiedCurrency.PLN));
+        assertThat(mtmSell).isEqualTo(MoneyAmount.from("500.0", ReifiedCurrency.PLN));
+        assertThat(mtmBuy).isEqualTo(MoneyAmount.from("-500.0", ReifiedCurrency.PLN));
     }
 }
