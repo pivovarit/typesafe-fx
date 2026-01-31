@@ -14,11 +14,11 @@ public interface TypedCurrency {
 
     static TypedCurrency from(String code) {
         return switch (code) {
-            case "EUR" -> new EUR(Currency.getInstance(code));
-            case "USD" -> new USD(Currency.getInstance(code));
-            case "CHF" -> new CHF(Currency.getInstance(code));
-            case "GBP" -> new GBP(Currency.getInstance(code));
-            case "PLN" -> new PLN(Currency.getInstance(code));
+            case "EUR" -> EUR;
+            case "USD" -> USD;
+            case "CHF" -> CHF;
+            case "GBP" -> GBP;
+            case "PLN" -> PLN;
             default -> throw new IllegalArgumentException("Unsupported currency: " + code);
         };
     }
