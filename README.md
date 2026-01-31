@@ -9,3 +9,21 @@ Instead of representing money as `(amount, "EUR")` and hoping you don’t accide
 - `FxRate<EUR, USD>` - a rate that can only exchange `MoneyAmount<EUR>` into `MoneyAmount<USD>`
 
 The goal: **push currency correctness into the type system** (at least as far as Java’s generics will allow) while still being ergonomic.
+
+```
+DirectionalCurrencyPair<USD, EUR> usdeur = DirectionalCurrencyPair.of(ReifiedCurrency.USD, ReifiedCurrency.EUR);
+
+MoneyAmount<USD> usdAmount = MoneyAmount.from(BigDecimal.TEN, ReifiedCurrency.USD);
+MoneyAmount<EUR> eurAmount = MoneyAmount.from(BigDecimal.TEN, ReifiedCurrency.EUR);
+
+FxRate<USD, EUR> rate1 = FxRate.from(new BigDecimal("0.84"), ReifiedCurrency.USD, ReifiedCurrency.EUR);
+FxRate<USD, EUR> rate2 = FxRate.from(new BigDecimal("0.84"), usdeur);
+
+FxRate<EUR, USD> inverted = rate1.invert();
+
+ReifiedCurrency currency = ReifiedCurrency.from("CHF");
+switch (currency) {
+    case CHF chf -> System.out.println(chf);
+    default -> System.out.println("not chf");
+}
+```

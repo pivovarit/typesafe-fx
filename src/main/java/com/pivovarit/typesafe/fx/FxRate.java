@@ -23,6 +23,10 @@ public record FxRate<F extends ReifiedCurrency, T extends ReifiedCurrency>(F fro
         return new FxRate<>(from, to, rate);
     }
 
+    public static <T extends ReifiedCurrency, R extends ReifiedCurrency> FxRate<T, R> from(BigDecimal rate, DirectionalCurrencyPair<T, R> pair) {
+        return new FxRate<>(pair.sell(), pair.buy(), rate);
+    }
+
     public MoneyAmount<T> exchange(MoneyAmount<F> money) {
         Objects.requireNonNull(money, "money");
         if (money.currency() != from) {
