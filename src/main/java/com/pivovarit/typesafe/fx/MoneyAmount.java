@@ -11,6 +11,10 @@ public record MoneyAmount<T extends ReifiedCurrency>(BigDecimal amount, T curren
         return new MoneyAmount<>(amount, currency);
     }
 
+    public static <T extends ReifiedCurrency> MoneyAmount<T> from(String amount, T currency) {
+        return new MoneyAmount<>(new BigDecimal(amount), currency);
+    }
+
     public MoneyAmount<T> add(MoneyAmount<T> addend) {
         Objects.requireNonNull(addend, "addend");
         requireSameCurrency(addend);
