@@ -15,12 +15,12 @@ class MarkToMarketTest {
         FxRate<USD, PLN> bookedRate = FxRate.from("4", ReifiedCurrency.USD, ReifiedCurrency.PLN);
         FxRate<USD, PLN> marketRate = FxRate.from("3.5", ReifiedCurrency.USD, ReifiedCurrency.PLN);
 
-        MoneyAmount<USD> amount = MoneyAmount.from("1000", ReifiedCurrency.USD);
+        Money<USD> amount = Money.from("1000", ReifiedCurrency.USD);
 
-        MoneyAmount<PLN> mtmSell = MarkToMarket.derive(bookedRate, marketRate, amount, DealtAction.SELL);
-        MoneyAmount<PLN> mtmBuy = MarkToMarket.derive(bookedRate, marketRate, amount, DealtAction.BUY);
+        Money<PLN> mtmSell = MarkToMarket.derive(bookedRate, marketRate, amount, DealtAction.SELL);
+        Money<PLN> mtmBuy = MarkToMarket.derive(bookedRate, marketRate, amount, DealtAction.BUY);
 
-        assertThat(mtmSell).isEqualTo(MoneyAmount.from("500.0", ReifiedCurrency.PLN));
-        assertThat(mtmBuy).isEqualTo(MoneyAmount.from("-500.0", ReifiedCurrency.PLN));
+        assertThat(mtmSell).isEqualTo(Money.from("500.0", ReifiedCurrency.PLN));
+        assertThat(mtmBuy).isEqualTo(Money.from("-500.0", ReifiedCurrency.PLN));
     }
 }
