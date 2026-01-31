@@ -1,6 +1,13 @@
 package com.pivovarit.typesafe.fx.currency;
 
 import java.util.Currency;
+import java.util.Objects;
 
 public record CHF(Currency currency) implements ReifiedCurrency {
+    public CHF {
+        Objects.requireNonNull(currency, "Currency cannot be null");
+        if (!currency.getCurrencyCode().equals("CHF")) {
+            throw new IllegalArgumentException("Currency must be CHF");
+        }
+    }
 }

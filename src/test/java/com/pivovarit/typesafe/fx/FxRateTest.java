@@ -40,8 +40,8 @@ class FxRateTest {
         MoneyAmount<ReifiedCurrency> gbp = MoneyAmount.from(BigDecimal.TEN, currency2);
 
         assertThatThrownBy(() -> {
-              MoneyAmount<ReifiedCurrency> ignored = chf.add(gbp);
-          }).isExactlyInstanceOf(IllegalArgumentException.class)
+            MoneyAmount<ReifiedCurrency> ignored = chf.add(gbp);
+        }).isExactlyInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("Currency mismatch: CHF vs GBP");
     }
 }

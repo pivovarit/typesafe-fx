@@ -1,6 +1,7 @@
 package com.pivovarit.typesafe.fx.currency;
 
 import java.util.Currency;
+import java.util.Set;
 
 public interface ReifiedCurrency {
     EUR EUR = currency("EUR");
@@ -31,5 +32,9 @@ public interface ReifiedCurrency {
             case "PLN" -> new PLN(Currency.getInstance(code));
             default -> throw new IllegalArgumentException("Unsupported currency: " + code);
         };
+    }
+
+    static Set<ReifiedCurrency> supportedCurrencies() {
+        return Set.of(EUR, USD, CHF, GBP, PLN);
     }
 }

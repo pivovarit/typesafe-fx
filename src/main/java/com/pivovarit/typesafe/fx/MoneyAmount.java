@@ -46,9 +46,14 @@ public record MoneyAmount<T extends ReifiedCurrency>(BigDecimal amount, T curren
         return from(amount.multiply(factor), currency);
     }
 
+    public <R extends ReifiedCurrency> MoneyAmount<R> convert(FxRate<T, R> rate) {
+        return rate.exchange(this);
+    }
+
     private void requireSameCurrency(MoneyAmount<? extends ReifiedCurrency> other) {
         if (!currency.currency().equals(other.currency().currency())) {
-            var msg = "Currency mismatch: %s vs %s".formatted(currency.currency().getCurrencyCode(), other.currency().currency().getCurrencyCode());
+            var msg = "Currency mismatch: %s vs %s".formatted(currency.currency().getCurrencyCode(), other.currency()
+              .currency().getCurrencyCode());
             throw new IllegalArgumentException(msg
             );
         }
