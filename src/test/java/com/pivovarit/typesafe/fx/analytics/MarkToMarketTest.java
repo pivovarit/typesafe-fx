@@ -1,6 +1,7 @@
-package com.pivovarit.typesafe.fx;
+package com.pivovarit.typesafe.fx.analytics;
 
-import com.pivovarit.typesafe.fx.analytics.MarkToMarket;
+import com.pivovarit.typesafe.fx.DealtAction;
+import com.pivovarit.typesafe.fx.Money;
 import com.pivovarit.typesafe.fx.currency.PLN;
 import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.currency.USD;
