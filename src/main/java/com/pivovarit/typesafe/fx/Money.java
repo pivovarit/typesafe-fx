@@ -75,42 +75,26 @@ public record Money<T extends TypedCurrency>(BigDecimal amount, T currency) {
     }
 
     public Money<USD> as(USD currency) {
-        Objects.requireNonNull(currency, "currency");
-        if (currency.equals(this.currency)) {
-            return Money.from(amount, currency);
-        } else {
-            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency().getCurrencyCode(), currency.currency().getCurrencyCode()));
-        }
+        return getAs(currency);
     }
 
     public Money<CHF> as(CHF currency) {
-        Objects.requireNonNull(currency, "currency");
-        if (currency.equals(this.currency)) {
-            return Money.from(amount, currency);
-        } else {
-            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency().getCurrencyCode(), currency.currency().getCurrencyCode()));
-        }
+        return getAs(currency);
     }
 
     public Money<PLN> as(PLN currency) {
-        Objects.requireNonNull(currency, "currency");
-        if (currency.equals(this.currency)) {
-            return Money.from(amount, currency);
-        } else {
-            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency().getCurrencyCode(), currency.currency().getCurrencyCode()));
-        }
+        return getAs(currency);
     }
 
     public Money<GBP> as(GBP currency) {
-        Objects.requireNonNull(currency, "currency");
-        if (currency.equals(this.currency)) {
-            return Money.from(amount, currency);
-        } else {
-            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency().getCurrencyCode(), currency.currency().getCurrencyCode()));
-        }
+        return getAs(currency);
     }
 
     public Money<EUR> as(EUR currency) {
+        return getAs(currency);
+    }
+
+    private <C extends TypedCurrency> Money<C> getAs(C currency) {
         Objects.requireNonNull(currency, "currency");
         if (currency.equals(this.currency)) {
             return Money.from(amount, currency);
