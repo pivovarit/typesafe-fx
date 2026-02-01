@@ -34,11 +34,11 @@ class BigRationalToBigDecimalTest {
         }
 
         @Test
-        void shouldRoundNegative_floorAndCeil_withCurrentImplementation() {
+        void shouldRoundNegativeFloorAndCeilMathematically() {
             var r = BigRational.of(-1, 3);
 
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.FLOOR)).isEqualByComparingTo("-0.33");
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.CEIL)).isEqualByComparingTo("-0.34");
+            assertThat(r.toBigDecimal(2, BigRational.Rounding.FLOOR)).isEqualByComparingTo("-0.34");
+            assertThat(r.toBigDecimal(2, BigRational.Rounding.CEIL)).isEqualByComparingTo("-0.33");
         }
 
         @Test
