@@ -1,6 +1,9 @@
 package com.pivovarit.typesafe.fx;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 // inspired by https://introcs.cs.princeton.edu/java/92symbolic/BigRational.java.html
@@ -128,9 +131,6 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
         }
     }
 
-    /**
-     * Round half-even (banker's rounding).
-     */
     public BigInteger roundHalfEven() {
         if (numerator.signum() == 0) {
             return BigInteger.ZERO;
@@ -148,6 +148,33 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
               ? q
               : q.add(BigInteger.valueOf(numerator.signum()));
         }
+    }
+
+    public BigDecimal toBigDecimal(int scale, Rounding rounding) {
+        Objects.requireNonNull(rounding, "rounding");
+
+        if (scale < 0) {
+            throw new ArithmeticException("negative scale");
+        }
+
+        BigDecimal n = new BigDecimal(numerator);
+        BigDecimal d = new BigDecimal(denominator);
+
+        return n.divide(d, scale, switch (rounding) {
+            case FLOOR -> RoundingMode.DOWN;
+            case CEIL -> RoundingMode.UP;
+            case HALF_UP -> RoundingMode.HALF_UP;
+            case HALF_EVEN -> RoundingMode.HALF_EVEN;
+        });
+    }
+
+    public BigDecimal toBigDecimal(MathContext mathContext) {
+        Objects.requireNonNull(mathContext, "mathContext");
+
+        BigDecimal n = new BigDecimal(numerator);
+        BigDecimal d = new BigDecimal(denominator);
+
+        return n.divide(d, mathContext);
     }
 
     public BigRational inverse() {
@@ -168,7 +195,6 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
     public enum Rounding {
         FLOOR,
         CEIL,
-        TRUNCATE,
         HALF_UP,
         HALF_EVEN
     }
