@@ -161,8 +161,8 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
         BigDecimal d = new BigDecimal(denominator);
 
         return n.divide(d, scale, switch (rounding) {
-            case FLOOR -> RoundingMode.DOWN;
-            case CEIL -> RoundingMode.UP;
+            case FLOOR -> RoundingMode.FLOOR;
+            case CEIL -> RoundingMode.CEILING;
             case HALF_UP -> RoundingMode.HALF_UP;
             case HALF_EVEN -> RoundingMode.HALF_EVEN;
         });
@@ -175,6 +175,38 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
         BigDecimal d = new BigDecimal(denominator);
 
         return n.divide(d, mathContext);
+    }
+
+    public record BigDecimalConversion(BigDecimal value, BigRational roundingLoss) {
+        public BigDecimalConversion {
+            Objects.requireNonNull(value, "value");
+            Objects.requireNonNull(roundingLoss, "roundingLoss");
+        }
+    }
+
+    public BigDecimalConversion toBigDecimalWithRoundingLoss(int scale, Rounding rounding) {
+        BigDecimal value = toBigDecimal(scale, rounding);
+        BigRational asRational = fromBigDecimalExact(value);
+        return new BigDecimalConversion(value, this.subtract(asRational));
+    }
+
+    public BigDecimalConversion toBigDecimalWithRoundingLoss(MathContext mathContext) {
+        BigDecimal value = toBigDecimal(mathContext);
+        BigRational asRational = fromBigDecimalExact(value);
+        return new BigDecimalConversion(value, this.subtract(asRational));
+    }
+
+    private static BigRational fromBigDecimalExact(BigDecimal bd) {
+        BigInteger unscaled = bd.unscaledValue();
+        int scale = bd.scale();
+
+        if (scale >= 0) {
+            BigInteger den = BigInteger.TEN.pow(scale);
+            return BigRational.of(unscaled, den);
+        } else {
+            BigInteger mul = BigInteger.TEN.pow(-scale);
+            return BigRational.of(unscaled.multiply(mul), BigInteger.ONE);
+        }
     }
 
     public BigRational inverse() {
