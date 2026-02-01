@@ -37,6 +37,14 @@ public record FxRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T
         return new FxRate<>(pair.sell(), pair.buy(), rate);
     }
 
+    public Money<T> exchangeUnsafe(Money<? super F> money) {
+        Objects.requireNonNull(money, "money");
+        if (money.currency() != from) {
+            throw new IllegalArgumentException("Money currency " + money.currency() + " does not match rate.from " + from);
+        }
+        return new Money<>(money.amount().multiply(rate), to);
+    }
+
     public Money<T> exchange(Money<F> money) {
         Objects.requireNonNull(money, "money");
         if (money.currency() != from) {
