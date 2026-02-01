@@ -40,6 +40,19 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
         return new BigRational(numerator, denominator);
     }
 
+    public static BigRational of(BigDecimal bigDecimal) {
+        Objects.requireNonNull(bigDecimal, "bigDecimal");
+
+        BigDecimal amount = bigDecimal.stripTrailingZeros();
+        BigInteger n = amount.unscaledValue();
+
+        int scale = amount.scale();
+
+        return scale >= 0
+          ? new BigRational(n, BigInteger.TEN.pow(scale))
+          : new BigRational(n.multiply(BigInteger.TEN.pow(-scale)), BigInteger.ONE);
+    }
+
     public boolean isZero() {
         return numerator.signum() == 0;
     }
