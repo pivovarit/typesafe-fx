@@ -1,48 +1,85 @@
 package com.pivovarit.typesafe.fx;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
 import java.math.RoundingMode;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RoundingDriftTest {
+class BigRationalDivisionPrecisionTest {
 
-    @Test
-    void repeatedRoundedDivisionAccumulatesToMaterialError() {
-        BigDecimal total = new BigDecimal("1000.00");
-        BigDecimal three = new BigDecimal("3");
-        int days = 365;
+    private static final int n = 200;
 
-        BigDecimal accumulatedLoss = BigDecimal.ZERO;
+    private static final BigInteger THREE_BI = BigInteger.valueOf(3);
+    private static final BigDecimal THREE_BD = BigDecimal.valueOf(3);
 
-        for (int i = 0; i < days; i++) {
-            BigDecimal perLeg = total.divide(three, 2, RoundingMode.HALF_UP);
-            BigDecimal distributed = perLeg.multiply(three);
-            BigDecimal dailyLoss = total.subtract(distributed);
-            accumulatedLoss = accumulatedLoss.add(dailyLoss);
+    @Nested
+    class BigDecimalTests {
+
+        @Test
+        void repeatedDivisionShouldBeExact() {
+            BigRational r = BigRational.ONE;
+            for (int i = 0; i < n; i++) {
+                r = r.divide(3);
+            }
+
+            BigRational expected = BigRational.of(BigInteger.ONE, THREE_BI.pow(n));
+
+            assertThat(r)
+              .as("1 divided by 3, %s times should be exactly 1/3^%s", n, n)
+              .isEqualTo(expected);
         }
 
-        assertThat(accumulatedLoss).isEqualByComparingTo(new BigDecimal("3.65"));
-        assertThat(accumulatedLoss).isGreaterThan(new BigDecimal("1.00"));
+        @Test
+        void divideManyTimesThenMultiplyBackShouldReturnExactlyOne() {
+            BigRational r = BigRational.ONE;
+            for (int i = 0; i < n; i++) {
+                r = r.divide(3);
+            }
+
+            BigRational factor = BigRational.of(THREE_BI.pow(n), BigInteger.ONE);
+            BigRational back = r.multiply(factor);
+
+            assertThat(back).isEqualTo(BigRational.ONE);
+        }
     }
 
-    @Test
-    void repeatedRoundedDivisionDoesNotAccumulateError() {
-        BigRational total = BigRational.of(1000);
-        BigRational three = BigRational.of(3);
-        int days = 365;
+    @Nested
+    class BigRationalTests {
 
-        BigRational accumulatedLoss = BigRational.ZERO;
+        @Test
+        void divideManyTimesThenMultiplyBackShouldAccumulateRoundingError() {
+            MathContext mc = new MathContext(20, RoundingMode.HALF_EVEN);
 
-        for (int i = 0; i < days; i++) {
-            BigRational perLeg = total.divide(three);
-            BigRational distributed = perLeg.multiply(three);
-            BigRational dailyLoss = total.subtract(distributed);
-            accumulatedLoss = accumulatedLoss.add(dailyLoss);
+            BigDecimal x = BigDecimal.ONE;
+            for (int i = 0; i < n; i++) {
+                x = x.divide(THREE_BD, mc);
+            }
+
+            BigDecimal back = x.multiply(THREE_BD.pow(n));
+
+            assertThat(back)
+              .as("With repeated rounding, dividing by 3 %s times and multiplying back by 3^%s should drift", n, n)
+              .isNotEqualByComparingTo(BigDecimal.ONE);
         }
 
-        assertThat(total.divide(three)).isEqualTo(BigRational.of(1000, 3));
-        assertThat(accumulatedLoss).isEqualTo(BigRational.ZERO);
+        @Test
+        void repeatedDivisionShouldDifferFromSingleDivisionAtFixedPrecision() {
+            MathContext mc = new MathContext(20, RoundingMode.HALF_EVEN);
+
+            BigDecimal repeated = BigDecimal.ONE;
+            for (int i = 0; i < n; i++) {
+                repeated = repeated.divide(THREE_BD, mc);
+            }
+
+            BigDecimal single = BigDecimal.ONE.divide(THREE_BD.pow(n), mc);
+
+            assertThat(repeated)
+              .as("Rounding at every step should generally differ from rounding once at the end")
+              .isNotEqualByComparingTo(single);
+        }
     }
 }
