@@ -1,6 +1,11 @@
 package com.pivovarit.typesafe.fx;
 
+import com.pivovarit.typesafe.fx.currency.CHF;
+import com.pivovarit.typesafe.fx.currency.EUR;
+import com.pivovarit.typesafe.fx.currency.GBP;
+import com.pivovarit.typesafe.fx.currency.PLN;
 import com.pivovarit.typesafe.fx.currency.TypedCurrency;
+import com.pivovarit.typesafe.fx.currency.USD;
 import com.pivovarit.typesafe.fx.rate.FxForwardRate;
 import com.pivovarit.typesafe.fx.rate.FxRate;
 import java.math.BigDecimal;
@@ -66,6 +71,51 @@ public record Money<T extends TypedCurrency>(BigDecimal amount, T currency) {
               .currency().getCurrencyCode());
             throw new IllegalArgumentException(msg
             );
+        }
+    }
+
+    public Money<USD> as(USD currency) {
+        Objects.requireNonNull(currency, "currency");
+        if (currency.equals(this.currency)) {
+            return Money.from(amount, currency);
+        } else {
+            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency().getCurrencyCode(), currency.currency().getCurrencyCode()));
+        }
+    }
+
+    public Money<CHF> as(CHF currency) {
+        Objects.requireNonNull(currency, "currency");
+        if (currency.equals(this.currency)) {
+            return Money.from(amount, currency);
+        } else {
+            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency().getCurrencyCode(), currency.currency().getCurrencyCode()));
+        }
+    }
+
+    public Money<PLN> as(PLN currency) {
+        Objects.requireNonNull(currency, "currency");
+        if (currency.equals(this.currency)) {
+            return Money.from(amount, currency);
+        } else {
+            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency().getCurrencyCode(), currency.currency().getCurrencyCode()));
+        }
+    }
+
+    public Money<GBP> as(GBP currency) {
+        Objects.requireNonNull(currency, "currency");
+        if (currency.equals(this.currency)) {
+            return Money.from(amount, currency);
+        } else {
+            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency().getCurrencyCode(), currency.currency().getCurrencyCode()));
+        }
+    }
+
+    public Money<EUR> as(EUR currency) {
+        Objects.requireNonNull(currency, "currency");
+        if (currency.equals(this.currency)) {
+            return Money.from(amount, currency);
+        } else {
+            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency().getCurrencyCode(), currency.currency().getCurrencyCode()));
         }
     }
 }

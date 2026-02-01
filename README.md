@@ -46,6 +46,23 @@ Money<TypedCurrency> gbp = Money.from(BigDecimal.TEN, TypedCurrency.from("GBP"))
 Money<TypedCurrency> result = chf.add(gbp); // exception!
 ```
 
+Once currency is known, types are back:
+```
+Money<TypedCurrency> chfAmount = Money.from("100", TypedCurrency.from("CHF"));
+FxRate<CHF, USD> rate = FxRate.from("1.29", TypedCurrency.CHF, TypedCurrency.USD);
+
+// doesn't compile, unsafe
+Money<USD> e1 = rate.exchange(chfAmount);
+
+// compiles, runtime check
+Money<USD> e2 = rate.exchangeUnsafe(chfAmount);
+
+if (chfAmount.currency() instanceof CHF chf) {
+    // compiles, safe
+    Money<USD> e3 = rate.exchange(chfAmount.as(chf));
+}
+```
+
 Mark-to-market derives value difference between booked and market rates:
 
 ```
