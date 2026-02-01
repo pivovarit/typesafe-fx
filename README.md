@@ -3,6 +3,8 @@
 [![ci](https://github.com/pivovarit/typesafe-fx/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pivovarit/typesafe-fx/actions/workflows/ci.yml)
 [![pitest](https://github.com/pivovarit/typesafe-fx/actions/workflows/pitest.yml/badge.svg?branch=main)](http://pivovarit.github.io/typesafe-fx)
 
+> ⚠️ Prototype status: proof-of-concept that does not present a stable nor complete API yet
+
 A tiny Java prototype that explores **type-safe FX conversions** using *reified* currency types. This is an extension on top of `BigDecimal` and `Currency` from the JDK.
 
 Instead of representing money as `(BigDecimal, Currency)` and hoping to not accidentally add EUR to USD or apply the wrong FX rate, `typesafe-fx` models currency correctness explicitly:
@@ -15,8 +17,6 @@ Instead of representing money as `(BigDecimal, Currency)` and hoping to not acci
 - `MarkToMarket` — PnL derivation using booked vs market rates
 
 **Goal:** push currency correctness into the type system (as far as Java generics allow) while staying ergonomic.
-
-> ⚠️ Prototype status: the API is intentionally small and focused on exploration, not completeness.
 
 ```
 DirectionalCurrencyPair<USD, EUR> usdeur = DirectionalCurrencyPair.of(TypedCurrency.USD, TypedCurrency.EUR);
