@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public record FxForwardRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T to, BigDecimal rate, LocalDate valueDate) {
+public record FxForwardRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T to, BigDecimal rate, LocalDate valueDate)
+  implements ExchangeRate<F, T> {
     public FxForwardRate {
         Objects.requireNonNull(rate, "rate");
         Objects.requireNonNull(rate, "rate");
@@ -22,6 +23,7 @@ public record FxForwardRate<F extends TypedCurrency, T extends TypedCurrency>(F 
         return new FxForwardRate<>(pair.sell(), pair.buy(),  rate, valueDate);
     }
 
+    @Override
     public Money<T> exchange(Money<F> money) {
         Objects.requireNonNull(money, "money");
         if (money.currency() != from) {
@@ -30,7 +32,8 @@ public record FxForwardRate<F extends TypedCurrency, T extends TypedCurrency>(F 
         return new Money<>(money.amount().multiply(rate), to);
     }
 
-    public Money<T> exchangeUnsafe(Money<?> money) {
+    @Override
+    public Money<T> exchangeOrThrow(Money<?> money) {
         Objects.requireNonNull(money, "money");
         if (money.currency() != from) {
             throw new IllegalArgumentException("Money currency " + money.currency() + " does not match rate.from " + from);

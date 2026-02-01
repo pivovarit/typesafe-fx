@@ -11,7 +11,8 @@ import java.util.Objects;
 /**
  * Typed FX rate: {@code FxRate<F, T>} exchanges {@code Money<F>} -> {@code Money<T>}.
  */
-public record FxRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T to, BigDecimal rate) {
+public record FxRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T to, BigDecimal rate)
+  implements ExchangeRate<F, T> {
     public FxRate {
         Objects.requireNonNull(from, "from");
         Objects.requireNonNull(to, "to");
@@ -37,7 +38,8 @@ public record FxRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T
         return new FxRate<>(pair.sell(), pair.buy(), rate);
     }
 
-    public Money<T> exchangeUnsafe(Money<?> money) {
+    @Override
+    public Money<T> exchangeOrThrow(Money<?> money) {
         Objects.requireNonNull(money, "money");
         if (money.currency() != from) {
             throw new IllegalArgumentException("Money currency " + money.currency() + " does not match rate.from " + from);
@@ -45,6 +47,7 @@ public record FxRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T
         return new Money<>(money.amount().multiply(rate), to);
     }
 
+    @Override
     public Money<T> exchange(Money<F> money) {
         Objects.requireNonNull(money, "money");
         if (money.currency() != from) {
@@ -57,8 +60,7 @@ public record FxRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T
         return new FxRate<>(to, from, BigDecimal.ONE.divide(rate, new MathContext(18, RoundingMode.HALF_UP)));
     }
 
-    public static <A extends TypedCurrency, B extends TypedCurrency, C extends TypedCurrency>
-    FxRate<A, C> compose(FxRate<A, B> ab, FxRate<B, C> bc) {
+    public static <A extends TypedCurrency, B extends TypedCurrency, C extends TypedCurrency> FxRate<A, C> compose(FxRate<A, B> ab, FxRate<B, C> bc) {
         Objects.requireNonNull(ab, "ab");
         Objects.requireNonNull(bc, "bc");
         return new FxRate<>(ab.from, bc.to, ab.rate.multiply(bc.rate));
