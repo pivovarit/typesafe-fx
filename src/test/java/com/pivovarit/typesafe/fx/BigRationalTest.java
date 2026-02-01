@@ -432,4 +432,56 @@ public class BigRationalTest {
             assertThat(sum).isLessThan(BigRational.of(189, 100));
         }
     }
+
+    @Nested
+    @DisplayName("of(BigDecimal)")
+    class FromBigDecimal {
+
+        @Test
+        void integerBecomesOverOne() {
+            assertThat(BigRational.of(new BigDecimal("42"))).isEqualTo(BigRational.of(42, 1));
+            assertThat(BigRational.of(new BigDecimal("-42"))).isEqualTo(BigRational.of(-42, 1));
+            assertThat(BigRational.of(new BigDecimal("0"))).isEqualTo(BigRational.of(0, 1));
+        }
+
+        @Test
+        void simpleDecimal() {
+            assertThat(BigRational.of(new BigDecimal("12.34"))).isEqualTo(BigRational.of(617, 50));
+            assertThat(BigRational.of(new BigDecimal("-0.25"))).isEqualTo(BigRational.of(-1, 4));
+            assertThat(BigRational.of(new BigDecimal("0.1"))).isEqualTo(BigRational.of(1, 10));
+        }
+
+        @Test
+        void stripsTrailingZeros() {
+            assertThat(BigRational.of(new BigDecimal("12.3400"))).isEqualTo(BigRational.of(617, 50));
+            assertThat(BigRational.of(new BigDecimal("0.1000"))).isEqualTo(BigRational.of(1, 10));
+            assertThat(BigRational.of(new BigDecimal("1000.00"))).isEqualTo(BigRational.of(1000, 1));
+        }
+
+        @Test
+        void scientificNotation_positiveExponent_resultsInInteger() {
+            assertThat(BigRational.of(new BigDecimal("1E+3"))).isEqualTo(BigRational.of(1000, 1));
+            assertThat(BigRational.of(new BigDecimal("-12E+2"))).isEqualTo(BigRational.of(-1200, 1));
+        }
+
+        @Test
+        void scientificNotation_negativeExponent() {
+            assertThat(BigRational.of(new BigDecimal("1E-3"))).isEqualTo(BigRational.of(1, 1000));
+            assertThat(BigRational.of(new BigDecimal("-25E-2"))).isEqualTo(BigRational.of(-1, 4));
+        }
+
+        @Test
+        void preservesValue_roundTripViaBigDecimalString() {
+            BigDecimal a = new BigDecimal("12345678901234567890.0000012300");
+            BigRational r = BigRational.of(a);
+            BigDecimal b = new BigDecimal(r.numerator()).divide(new BigDecimal(r.denominator()));
+            assertThat(b).isEqualByComparingTo(a.stripTrailingZeros());
+        }
+
+        @Test
+        void zeroWithScaleNormalizesToZeroOverOne() {
+            assertThat(BigRational.of(new BigDecimal("0.00"))).isEqualTo(BigRational.of(0, 1));
+            assertThat(BigRational.of(new BigDecimal("-0.000"))).isEqualTo(BigRational.of(0, 1));
+        }
+    }
 }
