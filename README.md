@@ -3,16 +3,20 @@
 [![ci](https://github.com/pivovarit/typesafe-fx/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pivovarit/typesafe-fx/actions/workflows/ci.yml)
 [![pitest](https://github.com/pivovarit/typesafe-fx/actions/workflows/pitest.yml/badge.svg?branch=main)](http://pivovarit.github.io/typesafe-fx)
 
-A tiny Java prototype that explores **type-safe FX conversions** using *reified* currency types.
+A tiny Java prototype that explores **type-safe FX conversions** using *reified* currency types. This is an extension on top of `BigDecimal` and `Currency` from the JDK.
 
-Instead of representing money as `(BigDecimal, Currency)` and hoping you don’t accidentally add EUR to USD or apply the wrong FX rate, `typesafe-fx` models:
+Instead of representing money as `(BigDecimal, Currency)` and hoping to not accidentally add EUR to USD or apply the wrong FX rate, `typesafe-fx` models currency correctness explicitly:
 
-- `TypedCurrency` - a type-safe representation of a currency
-- `Money<EUR>` - money *in* a specific currency type
-- `FxRate<EUR, USD>` - a rate that can only exchange `Money<EUR>` into `Money<USD>`
-- `FxForwardRate<EUR, USD>` - a rate that can only exchange `Money<EUR>` into `Money<USD>` on a given date
+- `TypedCurrency` — a type-safe representation of a currency (reified as a Java type)
+- `Money<EUR>` — money *in* a specific currency type
+- `FxRate<EUR, USD>` — a rate that can only exchange `Money<EUR>` into `Money<USD>`
+- `FxForwardRate<EUR, USD>` — same as above, but for a specific value date
+- `DirectionalCurrencyPair<SELL, BUY>` — a typed FX pair (`USD/EUR`, `EUR/USD`, etc.)
+- `MarkToMarket` — PnL derivation using booked vs market rates
 
-The goal: **push currency correctness into the type system** (at least as far as Java’s generics will allow) while still being ergonomic.
+**Goal:** push currency correctness into the type system (as far as Java generics allow) while staying ergonomic.
+
+> ⚠️ Prototype status: the API is intentionally small and focused on exploration, not completeness.
 
 ```
 DirectionalCurrencyPair<USD, EUR> usdeur = DirectionalCurrencyPair.of(TypedCurrency.USD, TypedCurrency.EUR);
@@ -34,7 +38,7 @@ switch (currency) {
 }
 ```
 
-When type can't be determined, rely on runtime checks:
+Sometimes we don’t know the currency at compile time (e.g., parsed from a message). We can still use `Money<TypedCurrency>`, but then correctness is enforced at runtime:
 ```
 Money<TypedCurrency> chf = Money.from(BigDecimal.TEN, TypedCurrency.from("CHF"));
 Money<TypedCurrency> gbp = Money.from(BigDecimal.TEN, TypedCurrency.from("GBP"));
@@ -42,7 +46,7 @@ Money<TypedCurrency> gbp = Money.from(BigDecimal.TEN, TypedCurrency.from("GBP"))
 Money<TypedCurrency> result = chf.add(gbp); // exception!
 ```
 
-Mark-to-market:
+Mark-to-market derives value difference between booked and market rates:
 
 ```
 FxRate<USD, PLN> bookedRate = FxRate.from("4", TypedCurrency.USD, TypedCurrency.PLN);
