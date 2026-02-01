@@ -1,12 +1,12 @@
-package com.pivovarit.typesafe.fx;
+package com.pivovarit.typesafe.fx.rate;
 
+import com.pivovarit.typesafe.fx.DirectionalCurrencyPair;
+import com.pivovarit.typesafe.fx.Money;
 import com.pivovarit.typesafe.fx.currency.CHF;
 import com.pivovarit.typesafe.fx.currency.EUR;
 import com.pivovarit.typesafe.fx.currency.PLN;
 import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.currency.USD;
-import com.pivovarit.typesafe.fx.rate.FxForwardRate;
-import com.pivovarit.typesafe.fx.rate.FxRate;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
@@ -42,7 +42,7 @@ class FxRateTest {
         Money<TypedCurrency> money = Money.from("1000", TypedCurrency.from("USD"));
         FxRate<USD, PLN> usdPlnRate = FxRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 
-        Money<PLN> converted = usdPlnRate.exchangeUnsafe(money);
+        Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
         assertThat(converted.amount()).isEqualTo(new BigDecimal("4000.00"));
         assertThat(converted.currency().currency()).isEqualTo(Currency.getInstance("PLN"));
     }
@@ -52,7 +52,7 @@ class FxRateTest {
         Money<?> money = Money.from("1000", TypedCurrency.from("USD"));
         FxRate<USD, PLN> usdPlnRate = FxRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 
-        Money<PLN> converted = usdPlnRate.exchangeUnsafe(money);
+        Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
         assertThat(converted.amount()).isEqualTo(new BigDecimal("4000.00"));
         assertThat(converted.currency().currency()).isEqualTo(Currency.getInstance("PLN"));
     }
@@ -63,7 +63,7 @@ class FxRateTest {
         FxRate<USD, PLN> usdPlnRate = FxRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 
         assertThatThrownBy(() -> {
-            Money<PLN> converted = usdPlnRate.exchangeUnsafe(money);
+            Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
         })
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("Money currency EUR does not match rate.from USD");

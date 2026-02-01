@@ -55,7 +55,7 @@ FxRate<CHF, USD> rate = FxRate.from("1.29", TypedCurrency.CHF, TypedCurrency.USD
 Money<USD> e1 = rate.exchange(chfAmount);
 
 // compiles, runtime check
-Money<USD> e2 = rate.exchangeUnsafe(chfAmount);
+Money<USD> e2 = rate.exchangeOrThrow(chfAmount);
 
 if (chfAmount.currency() instanceof CHF chf) {
     // compiles, safe

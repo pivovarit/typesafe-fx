@@ -41,7 +41,7 @@ class FxForwardRateTest {
         Money<TypedCurrency> money = Money.from("1000", TypedCurrency.from("USD"));
         FxForwardRate<USD, PLN> usdPlnRate = FxForwardRate.from(new BigDecimal("4.00"), TypedCurrency.USD, TypedCurrency.PLN, valueDate);
 
-        Money<PLN> converted = usdPlnRate.exchangeUnsafe(money);
+        Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
         assertThat(converted.amount()).isEqualTo(new BigDecimal("4000.00"));
         assertThat(converted.currency().currency()).isEqualTo(Currency.getInstance("PLN"));
     }
@@ -52,7 +52,7 @@ class FxForwardRateTest {
         Money<?> money = Money.from("1000", TypedCurrency.from("USD"));
         FxForwardRate<USD, PLN> usdPlnRate = FxForwardRate.from(new BigDecimal("4.00"), TypedCurrency.USD, TypedCurrency.PLN, valueDate);
 
-        Money<PLN> converted = usdPlnRate.exchangeUnsafe(money);
+        Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
         assertThat(converted.amount()).isEqualTo(new BigDecimal("4000.00"));
         assertThat(converted.currency().currency()).isEqualTo(Currency.getInstance("PLN"));
     }
@@ -64,7 +64,7 @@ class FxForwardRateTest {
         FxForwardRate<USD, PLN> usdPlnRate = FxForwardRate.from(new BigDecimal("4.00"), TypedCurrency.USD, TypedCurrency.PLN, valueDate);
 
         assertThatThrownBy(() -> {
-            Money<PLN> converted = usdPlnRate.exchangeUnsafe(money);
+            Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
         })
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("Money currency EUR does not match rate.from USD");
