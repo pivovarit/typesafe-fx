@@ -1,5 +1,6 @@
 package com.pivovarit.typesafe.fx.rate;
 
+import com.pivovarit.typesafe.fx.BigRational;
 import com.pivovarit.typesafe.fx.DirectionalCurrencyPair;
 import com.pivovarit.typesafe.fx.Money;
 import com.pivovarit.typesafe.fx.currency.CHF;
@@ -24,7 +25,7 @@ class FxRateTest {
 
         assertThat(inverted.from().equals(rate.to())).isTrue();
         assertThat(inverted.to().equals(rate.from())).isTrue();
-        assertThat(inverted.rate().compareTo(new BigDecimal("0.25"))).isZero();
+        assertThat(inverted.rate().compareTo(BigRational.of(new BigDecimal("0.25")))).isZero();
     }
 
     @Test
@@ -33,7 +34,7 @@ class FxRateTest {
         FxRate<USD, PLN> rate = FxRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 
         Money<PLN> converted = rate.exchange(money);
-        assertThat(converted.amount()).isEqualTo(new BigDecimal("4000.00"));
+        assertThat(converted.amount()).isEqualTo(BigRational.of(new BigDecimal("4000.00")));
         assertThat(converted.currency().currency()).isEqualTo(Currency.getInstance("PLN"));
     }
 
@@ -43,7 +44,7 @@ class FxRateTest {
         FxRate<USD, PLN> usdPlnRate = FxRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 
         Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
-        assertThat(converted.amount()).isEqualTo(new BigDecimal("4000.00"));
+        assertThat(converted.amount()).isEqualTo(BigRational.of(new BigDecimal("4000.00")));
         assertThat(converted.currency().currency()).isEqualTo(Currency.getInstance("PLN"));
     }
 
@@ -53,7 +54,7 @@ class FxRateTest {
         FxRate<USD, PLN> usdPlnRate = FxRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 
         Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
-        assertThat(converted.amount()).isEqualTo(new BigDecimal("4000.00"));
+        assertThat(converted.amount()).isEqualTo(BigRational.of(new BigDecimal("4000.00")));
         assertThat(converted.currency().currency()).isEqualTo(Currency.getInstance("PLN"));
     }
 
