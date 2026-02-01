@@ -9,12 +9,13 @@ A tiny Java prototype that explores **type-safe FX conversions** using *reified*
 
 Instead of representing money as `(BigDecimal, Currency)` and hoping to not accidentally add EUR to USD or apply the wrong FX rate, `typesafe-fx` models currency correctness explicitly:
 
-- `TypedCurrency` — a type-safe representation of a currency (reified as a Java type)
-- `Money<EUR>` — money *in* a specific currency type
-- `FxRate<EUR, USD>` — a rate that can only exchange `Money<EUR>` into `Money<USD>`
-- `FxForwardRate<EUR, USD>` — same as above, but for a specific value date
-- `DirectionalCurrencyPair<SELL, BUY>` — a typed FX pair (`USD/EUR`, `EUR/USD`, etc.)
-- `MarkToMarket` — PnL derivation using booked vs market rates
+- `TypedCurrency` - a type-safe representation of a currency (reified as a Java type)
+- `Money<EUR>` - money *in* a specific currency type
+- `BigRational` - exact rational arithmetic with deterministic rounding and `BigDecimal` conversion helpers
+- `FxRate<EUR, USD>` - a rate that can only exchange `Money<EUR>` into `Money<USD>`
+- `FxForwardRate<EUR, USD>` - same as above, but for a specific value date
+- `DirectionalCurrencyPair<SELL, BUY>` - a typed FX pair (`USD/EUR`, `EUR/USD`, etc.)
+- `MarkToMarket` - PnL derivation using booked vs market rates
 
 **Goal:** push currency correctness into the type system (as far as Java generics allow) while staying ergonomic.
 
@@ -61,6 +62,17 @@ if (chfAmount.currency() instanceof CHF chf) {
     // compiles, safe
     Money<USD> e3 = rate.exchange(chfAmount.as(chf));
 }
+```
+
+Lossless calculations with BigRational:
+
+```
+BigRational a = BigRational.of(10, 3);                              // 10/3
+        
+BigDecimal bd1 = a.toBigDecimal(2, BigRational.Rounding.HALF_UP);   // 3.33
+BigDecimal bd2 = a.toBigDecimal(2, BigRational.Rounding.HALF_EVEN); // 3.33
+BigDecimal bd3 = a.toBigDecimal(2, BigRational.Rounding.CEIL);      // 3.34
+BigDecimal bd4 = a.toBigDecimal(2, BigRational.Rounding.FLOOR);     // 3.33
 ```
 
 Mark-to-market derives value difference between booked and market rates:
