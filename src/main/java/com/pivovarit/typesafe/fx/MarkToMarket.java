@@ -1,6 +1,5 @@
 package com.pivovarit.typesafe.fx;
 
-import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.rate.FxForwardRate;
 import com.pivovarit.typesafe.fx.rate.FxRate;
 

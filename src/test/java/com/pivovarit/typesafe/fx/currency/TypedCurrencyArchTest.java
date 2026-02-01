@@ -1,5 +1,6 @@
 package com.pivovarit.typesafe.fx.currency;
 
+import com.pivovarit.typesafe.fx.TypedCurrency;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaModifier;
 import com.tngtech.archunit.junit.AnalyzeClasses;

@@ -1,7 +1,6 @@
 package com.pivovarit.typesafe.fx;
 
 import com.pivovarit.typesafe.fx.currency.EUR;
-import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.currency.USD;
 import org.junit.jupiter.api.Test;
 

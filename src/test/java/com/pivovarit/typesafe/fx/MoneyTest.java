@@ -1,6 +1,5 @@
 package com.pivovarit.typesafe.fx;
 
-import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -8,7 +7,6 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MoneyTest {
 

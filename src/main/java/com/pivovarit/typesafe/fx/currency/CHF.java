@@ -1,5 +1,6 @@
 package com.pivovarit.typesafe.fx.currency;
 
+import com.pivovarit.typesafe.fx.TypedCurrency;
 import java.util.Currency;
 import java.util.Objects;
 

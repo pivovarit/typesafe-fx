@@ -1,5 +1,10 @@
-package com.pivovarit.typesafe.fx.currency;
+package com.pivovarit.typesafe.fx;
 
+import com.pivovarit.typesafe.fx.currency.CHF;
+import com.pivovarit.typesafe.fx.currency.EUR;
+import com.pivovarit.typesafe.fx.currency.GBP;
+import com.pivovarit.typesafe.fx.currency.PLN;
+import com.pivovarit.typesafe.fx.currency.USD;
 import java.util.Currency;
 import java.util.Set;
 

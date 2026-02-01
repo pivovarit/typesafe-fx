@@ -4,7 +4,6 @@ import com.pivovarit.typesafe.fx.currency.CHF;
 import com.pivovarit.typesafe.fx.currency.EUR;
 import com.pivovarit.typesafe.fx.currency.GBP;
 import com.pivovarit.typesafe.fx.currency.PLN;
-import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.currency.USD;
 import com.pivovarit.typesafe.fx.rate.FxForwardRate;
 import com.pivovarit.typesafe.fx.rate.FxRate;
