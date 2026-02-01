@@ -11,14 +11,18 @@ import com.pivovarit.typesafe.fx.rate.FxRate;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public record Money<T extends TypedCurrency>(BigDecimal amount, T currency) {
+public record Money<T extends TypedCurrency>(BigRational amount, T currency) {
 
     public static <T extends TypedCurrency> Money<T> from(BigDecimal amount, T currency) {
+        return new Money<>(BigRational.of(amount), currency);
+    }
+
+    public static <T extends TypedCurrency> Money<T> from(BigRational amount, T currency) {
         return new Money<>(amount, currency);
     }
 
     public static <T extends TypedCurrency> Money<T> from(String amount, T currency) {
-        return new Money<>(new BigDecimal(amount), currency);
+        return new Money<>(BigRational.of(new BigDecimal(amount)), currency);
     }
 
     public Money<T> add(Money<T> addend) {
@@ -27,7 +31,7 @@ public record Money<T extends TypedCurrency>(BigDecimal amount, T currency) {
         return from(amount.add(addend.amount), currency);
     }
 
-    public Money<T> add(BigDecimal addend) {
+    public Money<T> add(BigRational addend) {
         Objects.requireNonNull(addend, "addend");
 
         return from(this.amount.add(addend), currency);
@@ -39,7 +43,7 @@ public record Money<T extends TypedCurrency>(BigDecimal amount, T currency) {
         return from(amount.subtract(subtrahend.amount), currency);
     }
 
-    public Money<T> subtract(BigDecimal subtrahend) {
+    public Money<T> subtract(BigRational subtrahend) {
         Objects.requireNonNull(subtrahend, "subtrahend");
         return from(this.amount.subtract(subtrahend), currency);
     }
@@ -52,7 +56,7 @@ public record Money<T extends TypedCurrency>(BigDecimal amount, T currency) {
         return from(amount.abs(), currency);
     }
 
-    public Money<T> multiply(BigDecimal factor) {
+    public Money<T> multiply(BigRational factor) {
         Objects.requireNonNull(factor, "factor");
         return from(amount.multiply(factor), currency);
     }
