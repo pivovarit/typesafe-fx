@@ -237,6 +237,14 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
         return denominator.equals(BigInteger.ONE) ? numerator.toString() : numerator + "/" + denominator;
     }
 
+    public String toDecimalString() {
+        return toDecimalString(10);
+    }
+
+    public String toDecimalString(int scale) {
+        return "~" + toBigDecimal(scale, Rounding.HALF_EVEN).toPlainString();
+    }
+
     public enum Rounding {
         FLOOR,
         CEIL,
