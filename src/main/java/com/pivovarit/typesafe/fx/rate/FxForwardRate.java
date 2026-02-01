@@ -30,6 +30,14 @@ public record FxForwardRate<F extends TypedCurrency, T extends TypedCurrency>(F 
         return new Money<>(money.amount().multiply(rate), to);
     }
 
+    public Money<T> exchangeUnsafe(Money<?> money) {
+        Objects.requireNonNull(money, "money");
+        if (money.currency() != from) {
+            throw new IllegalArgumentException("Money currency " + money.currency() + " does not match rate.from " + from);
+        }
+        return new Money<>(money.amount().multiply(rate), to);
+    }
+
     public FxForwardRate<T, F> invert() {
         FxRate<T, F> inverted = FxRate.from(rate, from, to).invert();
         return new FxForwardRate<>(inverted.from(), inverted.to(), inverted.rate(), valueDate);
