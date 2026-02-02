@@ -1,6 +1,5 @@
 package com.pivovarit.typesafe.fx.rate;
 
-import com.pivovarit.typesafe.fx.BigRational;
 import com.pivovarit.typesafe.fx.DirectionalCurrencyPair;
 import com.pivovarit.typesafe.fx.Money;
 import com.pivovarit.typesafe.fx.currency.CHF;
@@ -8,6 +7,7 @@ import com.pivovarit.typesafe.fx.currency.EUR;
 import com.pivovarit.typesafe.fx.currency.PLN;
 import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.currency.USD;
+import com.pivovarit.typesafe.fx.math.BigRational;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;

@@ -1,13 +1,16 @@
-package com.pivovarit.typesafe.fx;
+package com.pivovarit.typesafe.fx.math;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 // inspired by https://introcs.cs.princeton.edu/java/92symbolic/BigRational.java.html
 public record BigRational(BigInteger numerator, BigInteger denominator) implements Comparable<BigRational> {
+
+    private static final Pattern PLAIN_NUMBER = Pattern.compile("[+-]?\\d+(?:\\.\\d+)?");
 
     public BigRational {
         Objects.requireNonNull(numerator, "numerator");
@@ -27,6 +30,10 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
 
     public static final BigRational ZERO = new BigRational(BigInteger.ZERO, BigInteger.ONE);
     public static final BigRational ONE = new BigRational(BigInteger.ONE, BigInteger.ONE);
+
+    public static BigRational of(String s) {
+        return BigRationalParser.of(s);
+    }
 
     public static BigRational of(long numerator, long denominator) {
         return of(BigInteger.valueOf(numerator), BigInteger.valueOf(denominator));
@@ -163,7 +170,7 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
         }
     }
 
-    public BigDecimal toBigDecimal(int scale, Rounding rounding) {
+    BigDecimal toBigDecimal(int scale, Rounding rounding) {
         Objects.requireNonNull(rounding, "rounding");
 
         if (scale < 0) {
@@ -181,7 +188,7 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
         });
     }
 
-    public BigDecimal toBigDecimal(MathContext mathContext) {
+    BigDecimal toBigDecimal(MathContext mathContext) {
         Objects.requireNonNull(mathContext, "mathContext");
 
         BigDecimal n = new BigDecimal(numerator);
@@ -190,23 +197,16 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
         return n.divide(d, mathContext);
     }
 
-    public record BigDecimalConversion(BigDecimal value, BigRational roundingLoss) {
-        public BigDecimalConversion {
-            Objects.requireNonNull(value, "value");
-            Objects.requireNonNull(roundingLoss, "roundingLoss");
-        }
-    }
-
-    public BigDecimalConversion toBigDecimalWithRoundingLoss(int scale, Rounding rounding) {
+    public Decimal toDecimal(int scale, Rounding rounding) {
         BigDecimal value = toBigDecimal(scale, rounding);
         BigRational asRational = fromBigDecimalExact(value);
-        return new BigDecimalConversion(value, this.subtract(asRational));
+        return new Decimal(value, this.subtract(asRational));
     }
 
-    public BigDecimalConversion toBigDecimalWithRoundingLoss(MathContext mathContext) {
+    public Decimal toDecimal(MathContext mathContext) {
         BigDecimal value = toBigDecimal(mathContext);
         BigRational asRational = fromBigDecimalExact(value);
-        return new BigDecimalConversion(value, this.subtract(asRational));
+        return new Decimal(value, this.subtract(asRational));
     }
 
     private static BigRational fromBigDecimalExact(BigDecimal bd) {
@@ -243,12 +243,5 @@ public record BigRational(BigInteger numerator, BigInteger denominator) implemen
 
     public String toDecimalString(int scale) {
         return "~" + toBigDecimal(scale, Rounding.HALF_EVEN).toPlainString();
-    }
-
-    public enum Rounding {
-        FLOOR,
-        CEIL,
-        HALF_UP,
-        HALF_EVEN
     }
 }

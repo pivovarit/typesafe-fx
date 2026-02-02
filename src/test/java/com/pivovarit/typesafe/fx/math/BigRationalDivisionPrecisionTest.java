@@ -1,4 +1,4 @@
-package com.pivovarit.typesafe.fx;
+package com.pivovarit.typesafe.fx.math;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

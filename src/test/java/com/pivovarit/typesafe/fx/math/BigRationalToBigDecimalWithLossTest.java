@@ -1,4 +1,4 @@
-package com.pivovarit.typesafe.fx;
+package com.pivovarit.typesafe.fx.math;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -16,10 +16,10 @@ class BigRationalToBigDecimalWithLossTest {
         // 1/8 = 0.125 exactly at scale 3
         var r = BigRational.of(1, 8);
 
-        var res = r.toBigDecimalWithRoundingLoss(3, BigRational.Rounding.HALF_UP);
+        var res = r.toDecimal(3, Rounding.HALF_UP);
 
         assertThat(res.value()).isEqualByComparingTo(new BigDecimal("0.125"));
-        assertThat(res.roundingLoss()).isEqualTo(BigRational.ZERO);
+        assertThat(res.residual()).isEqualTo(BigRational.ZERO);
     }
 
     @Test
@@ -27,11 +27,11 @@ class BigRationalToBigDecimalWithLossTest {
         // 1/3 -> 0.33 (scale 2) ; exact - rounded = 1/3 - 33/100 = 1/300
         var r = BigRational.of(1, 3);
 
-        var res = r.toBigDecimalWithRoundingLoss(2, BigRational.Rounding.FLOOR);
+        var res = r.toDecimal(2, Rounding.FLOOR);
 
         assertThat(res.value()).isEqualByComparingTo(new BigDecimal("0.33"));
-        assertThat(res.roundingLoss()).isEqualTo(BigRational.of(1, 300));
-        assertThat(res.roundingLoss().signum()).isPositive();
+        assertThat(res.residual()).isEqualTo(BigRational.of(1, 300));
+        assertThat(res.residual().signum()).isPositive();
     }
 
     @Test
@@ -39,11 +39,11 @@ class BigRationalToBigDecimalWithLossTest {
         // 1/3 -> 0.34 (scale 2, CEIL) ; exact - rounded = 1/3 - 34/100 = -1/150
         var r = BigRational.of(1, 3);
 
-        var res = r.toBigDecimalWithRoundingLoss(2, BigRational.Rounding.CEIL);
+        var res = r.toDecimal(2, Rounding.CEIL);
 
         assertThat(res.value()).isEqualByComparingTo(new BigDecimal("0.34"));
-        assertThat(res.roundingLoss()).isEqualTo(BigRational.of(-1, 150));
-        assertThat(res.roundingLoss().signum()).isNegative();
+        assertThat(res.residual()).isEqualTo(BigRational.of(-1, 150));
+        assertThat(res.residual().signum()).isNegative();
     }
 
     @Test
@@ -53,15 +53,15 @@ class BigRationalToBigDecimalWithLossTest {
         // CEIL (towards +inf)  => -0.33 ; loss = -1/3 - (-33/100) = -1/300 (negative)
         var r = BigRational.of(-1, 3);
 
-        var floor = r.toBigDecimalWithRoundingLoss(2, BigRational.Rounding.FLOOR);
+        var floor = r.toDecimal(2, Rounding.FLOOR);
         assertThat(floor.value()).isEqualByComparingTo(new BigDecimal("-0.34"));
-        assertThat(floor.roundingLoss()).isEqualTo(BigRational.of(1, 150));
-        assertThat(floor.roundingLoss().signum()).isPositive();
+        assertThat(floor.residual()).isEqualTo(BigRational.of(1, 150));
+        assertThat(floor.residual().signum()).isPositive();
 
-        var ceil = r.toBigDecimalWithRoundingLoss(2, BigRational.Rounding.CEIL);
+        var ceil = r.toDecimal(2, Rounding.CEIL);
         assertThat(ceil.value()).isEqualByComparingTo(new BigDecimal("-0.33"));
-        assertThat(ceil.roundingLoss()).isEqualTo(BigRational.of(-1, 300));
-        assertThat(ceil.roundingLoss().signum()).isNegative();
+        assertThat(ceil.residual()).isEqualTo(BigRational.of(-1, 300));
+        assertThat(ceil.residual().signum()).isNegative();
     }
 
     @Test
@@ -70,10 +70,10 @@ class BigRationalToBigDecimalWithLossTest {
         // HALF_UP => 0.13 ; loss = 1/8 - 13/100 = -1/200
         var r = BigRational.of(1, 8);
 
-        var res = r.toBigDecimalWithRoundingLoss(2, BigRational.Rounding.HALF_UP);
+        var res = r.toDecimal(2, Rounding.HALF_UP);
 
         assertThat(res.value()).isEqualByComparingTo(new BigDecimal("0.13"));
-        assertThat(res.roundingLoss()).isEqualTo(BigRational.of(-1, 200));
+        assertThat(res.residual()).isEqualTo(BigRational.of(-1, 200));
     }
 
     @Test
@@ -82,10 +82,10 @@ class BigRationalToBigDecimalWithLossTest {
         // HALF_EVEN => 0.12 (since 12 is even) ; loss = 1/8 - 12/100 = 1/200
         var r = BigRational.of(1, 8);
 
-        var res = r.toBigDecimalWithRoundingLoss(2, BigRational.Rounding.HALF_EVEN);
+        var res = r.toDecimal(2, Rounding.HALF_EVEN);
 
         assertThat(res.value()).isEqualByComparingTo(new BigDecimal("0.12"));
-        assertThat(res.roundingLoss()).isEqualTo(BigRational.of(1, 200));
+        assertThat(res.residual()).isEqualTo(BigRational.of(1, 200));
     }
 
     @Test
@@ -94,10 +94,10 @@ class BigRationalToBigDecimalWithLossTest {
         // HALF_EVEN => -0.12 (since 12 even) ; loss = -1/8 - (-12/100) = -1/200
         var r = BigRational.of(-1, 8);
 
-        var res = r.toBigDecimalWithRoundingLoss(2, BigRational.Rounding.HALF_EVEN);
+        var res = r.toDecimal(2, Rounding.HALF_EVEN);
 
         assertThat(res.value()).isEqualByComparingTo(new BigDecimal("-0.12"));
-        assertThat(res.roundingLoss()).isEqualTo(BigRational.of(-1, 200));
+        assertThat(res.residual()).isEqualTo(BigRational.of(-1, 200));
     }
 
     @Test
@@ -105,11 +105,11 @@ class BigRationalToBigDecimalWithLossTest {
         var r = BigRational.of(1, 3);
         var mc = new MathContext(3, RoundingMode.HALF_UP); // ~0.333
 
-        var res = r.toBigDecimalWithRoundingLoss(mc);
+        var res = r.toDecimal(mc);
 
         assertThat(res.value()).isEqualByComparingTo(new BigDecimal("0.333"));
         // exact - 333/1000 = 1/3 - 333/1000 = 1/3000
-        assertThat(res.roundingLoss()).isEqualTo(BigRational.of(1, 3000));
+        assertThat(res.residual()).isEqualTo(BigRational.of(1, 3000));
     }
 
     @Test
@@ -117,13 +117,13 @@ class BigRationalToBigDecimalWithLossTest {
         // property-style check for a few modes on one input
         var r = BigRational.of(22, 7);
 
-        for (var mode : BigRational.Rounding.values()) {
-            var res = r.toBigDecimalWithRoundingLoss(4, mode);
+        for (var mode : Rounding.values()) {
+            var res = r.toDecimal(4, mode);
 
             var v = res.value();
             var asRational = bigDecimalToRationalExact(v);
 
-            assertThat(res.roundingLoss())
+            assertThat(res.residual())
               .as("loss must be exact: original - returnedValue")
               .isEqualTo(r.subtract(asRational));
         }
