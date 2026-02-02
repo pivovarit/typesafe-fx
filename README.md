@@ -3,9 +3,19 @@
 [![ci](https://github.com/pivovarit/typesafe-fx/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pivovarit/typesafe-fx/actions/workflows/ci.yml)
 [![pitest](https://github.com/pivovarit/typesafe-fx/actions/workflows/pitest.yml/badge.svg?branch=main)](http://pivovarit.github.io/typesafe-fx)
 
-> ⚠️ Prototype status: proof-of-concept that does not present a stable nor complete API yet
+> ⚠️ proof-of-concept: does not present a stable nor complete API yet
 
-A tiny Java prototype that explores type-safe FX conversions with reified currency types - combining familiar JDK primitives `(BigDecimal, Currency)` with lossless fraction arithmetic (`BigRational`) to keep calculations exact, and optionally capture rounding loss whenever you finally project results back into `BigDecimal`.
+Type-safe FX conversions with reified currency types - combining familiar JDK primitives `(BigDecimal, Currency)` with lossless fraction arithmetic (`BigRational`) to keep calculations exact, and optionally capture rounding loss whenever you finally project results back into `BigDecimal`.
+
+```
+Money<USD> usd = Money.from(BigRational.of(10, 3), TypedCurrency.USD);
+FxRate<USD, PLN> rate = FxRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
+Money<PLN> pln = usd.convert(rate);
+
+BigDecimalConversion r = pln.amount().toBigDecimalWithRoundingLoss(2, BigRational.Rounding.HALF_UP);
+BigDecimal value = r.value();        // 13.33
+BigRational loss = r.roundingLoss(); // 1/300 (~0.0033333333)
+```
 
 Instead of representing money as `(BigDecimal, Currency)` and hoping to not accidentally add EUR to USD or apply the wrong FX rate, `typesafe-fx` models currency correctness explicitly:
 
