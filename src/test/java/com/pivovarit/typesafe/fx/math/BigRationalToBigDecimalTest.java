@@ -1,4 +1,4 @@
-package com.pivovarit.typesafe.fx;
+package com.pivovarit.typesafe.fx.math;
 
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -19,47 +19,47 @@ class BigRationalToBigDecimalTest {
         void shouldConvertExactWhenTerminating_decimal() {
             var r = BigRational.of(1, 4);
 
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.FLOOR)).isEqualByComparingTo("0.25");
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.CEIL)).isEqualByComparingTo("0.25");
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.HALF_UP)).isEqualByComparingTo("0.25");
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.HALF_EVEN)).isEqualByComparingTo("0.25");
+            assertThat(r.toBigDecimal(2, Rounding.FLOOR)).isEqualByComparingTo("0.25");
+            assertThat(r.toBigDecimal(2, Rounding.CEIL)).isEqualByComparingTo("0.25");
+            assertThat(r.toBigDecimal(2, Rounding.HALF_UP)).isEqualByComparingTo("0.25");
+            assertThat(r.toBigDecimal(2, Rounding.HALF_EVEN)).isEqualByComparingTo("0.25");
         }
 
         @Test
         void shouldRoundPositive_floorAndCeil() {
             var r = BigRational.of(1, 3);
 
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.FLOOR)).isEqualByComparingTo("0.33");
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.CEIL)).isEqualByComparingTo("0.34");
+            assertThat(r.toBigDecimal(2, Rounding.FLOOR)).isEqualByComparingTo("0.33");
+            assertThat(r.toBigDecimal(2, Rounding.CEIL)).isEqualByComparingTo("0.34");
         }
 
         @Test
         void shouldRoundNegativeFloorAndCeilMathematically() {
             var r = BigRational.of(-1, 3);
 
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.FLOOR)).isEqualByComparingTo("-0.34");
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.CEIL)).isEqualByComparingTo("-0.33");
+            assertThat(r.toBigDecimal(2, Rounding.FLOOR)).isEqualByComparingTo("-0.34");
+            assertThat(r.toBigDecimal(2, Rounding.CEIL)).isEqualByComparingTo("-0.33");
         }
 
         @Test
         void shouldRoundHalfUp_atHalf() {
             var r = BigRational.of(201, 200);
 
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.HALF_UP)).isEqualByComparingTo("1.01");
+            assertThat(r.toBigDecimal(2, Rounding.HALF_UP)).isEqualByComparingTo("1.01");
         }
 
         @Test
         void shouldRoundHalfEven_tieGoesToEven() {
             var r = BigRational.of(201, 200);
 
-            assertThat(r.toBigDecimal(2, BigRational.Rounding.HALF_EVEN)).isEqualByComparingTo("1.00");
+            assertThat(r.toBigDecimal(2, Rounding.HALF_EVEN)).isEqualByComparingTo("1.00");
         }
 
         @Test
         void shouldThrowWhenScaleNegative() {
             var r = BigRational.of(1, 3);
 
-            assertThatThrownBy(() -> r.toBigDecimal(-1, BigRational.Rounding.HALF_UP))
+            assertThatThrownBy(() -> r.toBigDecimal(-1, Rounding.HALF_UP))
               .isInstanceOf(ArithmeticException.class);
         }
 
@@ -67,7 +67,7 @@ class BigRationalToBigDecimalTest {
         void shouldReturnZeroForZero() {
             var r = BigRational.ZERO;
 
-            assertThat(r.toBigDecimal(5, BigRational.Rounding.HALF_UP)).isEqualByComparingTo("0.00000");
+            assertThat(r.toBigDecimal(5, Rounding.HALF_UP)).isEqualByComparingTo("0.00000");
         }
     }
 

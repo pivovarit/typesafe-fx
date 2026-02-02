@@ -6,6 +6,7 @@ import com.pivovarit.typesafe.fx.currency.GBP;
 import com.pivovarit.typesafe.fx.currency.PLN;
 import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.currency.USD;
+import com.pivovarit.typesafe.fx.math.BigRational;
 import com.pivovarit.typesafe.fx.rate.FxForwardRate;
 import com.pivovarit.typesafe.fx.rate.FxRate;
 import java.math.BigDecimal;
@@ -13,16 +14,16 @@ import java.util.Objects;
 
 public record Money<T extends TypedCurrency>(BigRational amount, T currency) {
 
-    public static <T extends TypedCurrency> Money<T> from(BigDecimal amount, T currency) {
-        return new Money<>(BigRational.of(amount), currency);
-    }
-
     public static <T extends TypedCurrency> Money<T> from(BigRational amount, T currency) {
         return new Money<>(amount, currency);
     }
 
+    public static <T extends TypedCurrency> Money<T> from(BigDecimal amount, T currency) {
+        return new Money<>(BigRational.of(amount), currency);
+    }
+
     public static <T extends TypedCurrency> Money<T> from(String amount, T currency) {
-        return new Money<>(BigRational.of(new BigDecimal(amount)), currency);
+        return new Money<>(BigRational.of(amount), currency);
     }
 
     public Money<T> add(Money<T> addend) {

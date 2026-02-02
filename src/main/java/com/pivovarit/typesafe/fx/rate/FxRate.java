@@ -1,9 +1,9 @@
 package com.pivovarit.typesafe.fx.rate;
 
-import com.pivovarit.typesafe.fx.BigRational;
 import com.pivovarit.typesafe.fx.DirectionalCurrencyPair;
 import com.pivovarit.typesafe.fx.Money;
 import com.pivovarit.typesafe.fx.currency.TypedCurrency;
+import com.pivovarit.typesafe.fx.math.BigRational;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -22,11 +22,11 @@ public record FxRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T
     }
 
     public static <T extends TypedCurrency, R extends TypedCurrency> FxRate<T, R> from(String rate, T from, R to) {
-        return new FxRate<>(from, to, BigRational.of(new BigDecimal(rate)));
+        return new FxRate<>(from, to, BigRational.of(rate));
     }
 
     public static <T extends TypedCurrency, R extends TypedCurrency> FxRate<T, R> from(String rate, DirectionalCurrencyPair<T, R> pair) {
-        return new FxRate<>(pair.sell(), pair.buy(), BigRational.of(new BigDecimal(rate)));
+        return new FxRate<>(pair.sell(), pair.buy(), BigRational.of(rate));
     }
 
     public static <T extends TypedCurrency, R extends TypedCurrency> FxRate<T, R> from(BigDecimal rate, T from, R to) {

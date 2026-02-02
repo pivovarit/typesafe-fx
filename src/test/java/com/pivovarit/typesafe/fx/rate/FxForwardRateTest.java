@@ -1,10 +1,10 @@
 package com.pivovarit.typesafe.fx.rate;
 
-import com.pivovarit.typesafe.fx.BigRational;
 import com.pivovarit.typesafe.fx.Money;
 import com.pivovarit.typesafe.fx.currency.PLN;
 import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.currency.USD;
+import com.pivovarit.typesafe.fx.math.BigRational;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Currency;
@@ -22,7 +22,7 @@ class FxForwardRateTest {
 
         assertThat(inverted.from().equals(rate.to())).isTrue();
         assertThat(inverted.to().equals(rate.from())).isTrue();
-        assertThat(inverted.rate().compareTo(BigRational.of(new BigDecimal("0.25")))).isZero();
+        assertThat(inverted.rate().compareTo(BigRational.of("0.25"))).isZero();
     }
 
     @Test
@@ -32,7 +32,7 @@ class FxForwardRateTest {
         FxForwardRate<USD, PLN> rate = FxForwardRate.from(new BigDecimal("4.00"), TypedCurrency.USD, TypedCurrency.PLN, valueDate);
 
         Money<PLN> converted = rate.exchange(money);
-        assertThat(converted.amount()).isEqualTo(BigRational.of(new BigDecimal("4000.00")));
+        assertThat(converted.amount()).isEqualTo(BigRational.of("4000.00"));
         assertThat(converted.currency().currency()).isEqualTo(Currency.getInstance("PLN"));
     }
 
@@ -43,7 +43,7 @@ class FxForwardRateTest {
         FxForwardRate<USD, PLN> usdPlnRate = FxForwardRate.from(new BigDecimal("4.00"), TypedCurrency.USD, TypedCurrency.PLN, valueDate);
 
         Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
-        assertThat(converted.amount()).isEqualTo(BigRational.of(new BigDecimal("4000.00")));
+        assertThat(converted.amount()).isEqualTo(BigRational.of("4000.00"));
         assertThat(converted.currency().currency()).isEqualTo(Currency.getInstance("PLN"));
     }
 
@@ -54,7 +54,7 @@ class FxForwardRateTest {
         FxForwardRate<USD, PLN> usdPlnRate = FxForwardRate.from(new BigDecimal("4.00"), TypedCurrency.USD, TypedCurrency.PLN, valueDate);
 
         Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
-        assertThat(converted.amount()).isEqualTo(BigRational.of(new BigDecimal("4000.00")));
+        assertThat(converted.amount()).isEqualTo(BigRational.of("4000.00"));
         assertThat(converted.currency().currency()).isEqualTo(Currency.getInstance("PLN"));
     }
 

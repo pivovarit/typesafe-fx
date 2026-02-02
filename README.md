@@ -12,9 +12,9 @@ Money<USD> usd = Money.from(BigRational.of(10, 3), TypedCurrency.USD);
 FxRate<USD, PLN> rate = FxRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 Money<PLN> pln = usd.convert(rate);
 
-BigDecimalConversion r = pln.amount().toBigDecimalWithRoundingLoss(2, BigRational.Rounding.HALF_UP);
+Decimal r = pln.amount().toDecimal(2, BigRational.Rounding.HALF_UP);
 BigDecimal value = r.value();        // 13.33
-BigRational loss = r.roundingLoss(); // 1/300 (~0.0033333333)
+BigRational loss = r.residual();    // 1/300 (~0.0033333333)
 ```
 
 Instead of representing money as `(BigDecimal, Currency)` and hoping to not accidentally add EUR to USD or apply the wrong FX rate, `typesafe-fx` models currency correctness explicitly:
@@ -72,17 +72,6 @@ if (chfAmount.currency() instanceof CHF chf) {
     // compiles, safe
     Money<USD> e3 = rate.exchange(chfAmount.as(chf));
 }
-```
-
-Lossless calculations with BigRational:
-
-```
-BigRational a = BigRational.of(10, 3);                              // 10/3
-        
-BigDecimal bd1 = a.toBigDecimal(2, BigRational.Rounding.HALF_UP);   // 3.33
-BigDecimal bd2 = a.toBigDecimal(2, BigRational.Rounding.HALF_EVEN); // 3.33
-BigDecimal bd3 = a.toBigDecimal(2, BigRational.Rounding.CEIL);      // 3.34
-BigDecimal bd4 = a.toBigDecimal(2, BigRational.Rounding.FLOOR);     // 3.33
 ```
 
 Mark-to-market derives value difference between booked and market rates:

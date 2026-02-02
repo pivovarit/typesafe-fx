@@ -1,6 +1,6 @@
 package com.pivovarit.typesafe.fx.adr;
 
-import com.pivovarit.typesafe.fx.BigRational;
+import com.pivovarit.typesafe.fx.math.BigRational;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
