@@ -12,6 +12,15 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class TypedCurrencyTest {
 
     @TestFactory
+    Stream<DynamicTest> shouldSupportAllIsoCurrencies() {
+        return Currency.getAvailableCurrencies()
+          .stream()
+          .map(ccy -> DynamicTest.dynamicTest(ccy.getCurrencyCode(), () -> {
+              assertThat(TypedCurrency.from(ccy.getCurrencyCode()).currency()).isEqualTo(ccy);
+          }));
+    }
+
+    @TestFactory
     Stream<DynamicTest> shouldReturnCurrencyCodeToString() {
         return TypedCurrency.supportedCurrencies()
           .stream()

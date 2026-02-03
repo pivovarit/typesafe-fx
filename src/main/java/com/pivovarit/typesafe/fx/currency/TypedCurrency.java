@@ -24,11 +24,14 @@ public interface TypedCurrency {
             case "CHF" -> CHF;
             case "GBP" -> GBP;
             case "PLN" -> PLN;
-            default -> throw new IllegalArgumentException("Unsupported currency: " + code);
+            default -> new ISOCurrency(Currency.getInstance(code));
         };
     }
 
     static Set<TypedCurrency> supportedCurrencies() {
         return Set.of(EUR, USD, CHF, GBP, PLN, CAD, CZK, HKD, HUF, ILS);
+    }
+
+    record ISOCurrency(Currency currency) implements TypedCurrency {
     }
 }

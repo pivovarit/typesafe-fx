@@ -38,6 +38,7 @@ class TypedCurrencyArchTest {
     private static GivenClassesConjunction currencyClasses() {
         return ArchRuleDefinition.classes()
           .that().resideInAPackage("com.pivovarit.typesafe.fx.currency..")
+          .and().areNotNestedClasses()
           .and().implement(TypedCurrency.class);
     }
 }
