@@ -143,4 +143,9 @@ public record Money<T extends TypedCurrency>(BigRational amount, T currency) {
               .getCurrencyCode(), currency.currency().getCurrencyCode()));
         }
     }
+
+    @Override
+    public String toString() {
+        return toDecimal().value() + " " + currency.currency().getCurrencyCode();
+    }
 }
