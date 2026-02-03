@@ -33,6 +33,22 @@ public record Money<T extends TypedCurrency>(BigRational amount, T currency) {
         return new Money<>(BigRational.of(amount), currency);
     }
 
+    public static Money<TypedCurrency> from(BigRational amount, String currencyCode) {
+        return new Money<>(amount, TypedCurrency.from(currencyCode));
+    }
+
+    public static Money<TypedCurrency> from(BigDecimal amount, String currencyCode) {
+        return new Money<>(BigRational.of(amount), TypedCurrency.from(currencyCode));
+    }
+
+    public static Money<TypedCurrency> from(String amount, String currencyCode) {
+        return new Money<>(BigRational.of(amount), TypedCurrency.from(currencyCode));
+    }
+
+    public int fractionDigits() {
+        return currency.currency().getDefaultFractionDigits();
+    }
+
     public Decimal toDecimal() {
         return amount.toDecimal(currency.currency().getDefaultFractionDigits(), Rounding.HALF_UP);
     }
