@@ -9,6 +9,11 @@ public interface TypedCurrency {
     CHF CHF = new CHF(Currency.getInstance("CHF"));
     GBP GBP = new GBP(Currency.getInstance("GBP"));
     PLN PLN = new PLN(Currency.getInstance("PLN"));
+    CAD CAD = new CAD(Currency.getInstance("CAD"));
+    CZK CZK = new CZK(Currency.getInstance("CZK"));
+    HKD HKD = new HKD(Currency.getInstance("HKD"));
+    HUF HUF = new HUF(Currency.getInstance("HUF"));
+    ILS ILS = new ILS(Currency.getInstance("ILS"));
 
     Currency currency();
 
@@ -24,6 +29,6 @@ public interface TypedCurrency {
     }
 
     static Set<TypedCurrency> supportedCurrencies() {
-        return Set.of(EUR, USD, CHF, GBP, PLN);
+        return Set.of(EUR, USD, CHF, GBP, PLN, CAD, CZK, HKD, HUF, ILS);
     }
 }

@@ -1,8 +1,13 @@
 package com.pivovarit.typesafe.fx;
 
+import com.pivovarit.typesafe.fx.currency.CAD;
 import com.pivovarit.typesafe.fx.currency.CHF;
+import com.pivovarit.typesafe.fx.currency.CZK;
 import com.pivovarit.typesafe.fx.currency.EUR;
 import com.pivovarit.typesafe.fx.currency.GBP;
+import com.pivovarit.typesafe.fx.currency.HKD;
+import com.pivovarit.typesafe.fx.currency.HUF;
+import com.pivovarit.typesafe.fx.currency.ILS;
 import com.pivovarit.typesafe.fx.currency.PLN;
 import com.pivovarit.typesafe.fx.currency.TypedCurrency;
 import com.pivovarit.typesafe.fx.currency.USD;
@@ -99,12 +104,33 @@ public record Money<T extends TypedCurrency>(BigRational amount, T currency) {
         return getAs(currency);
     }
 
+    public Money<CAD> as(CAD currency) {
+        return getAs(currency);
+    }
+
+    public Money<CZK> as(CZK currency) {
+        return getAs(currency);
+    }
+
+    public Money<HKD> as(HKD currency) {
+        return getAs(currency);
+    }
+
+    public Money<HUF> as(HUF currency) {
+        return getAs(currency);
+    }
+
+    public Money<ILS> as(ILS currency) {
+        return getAs(currency);
+    }
+
     private <C extends TypedCurrency> Money<C> getAs(C currency) {
         Objects.requireNonNull(currency, "currency");
         if (currency.equals(this.currency)) {
             return Money.from(amount, currency);
         } else {
-            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency().getCurrencyCode(), currency.currency().getCurrencyCode()));
+            throw new IllegalArgumentException("currency mismatch: %s vs %s".formatted(this.currency.currency()
+              .getCurrencyCode(), currency.currency().getCurrencyCode()));
         }
     }
 }
