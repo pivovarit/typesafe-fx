@@ -12,6 +12,16 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class TypedCurrencyTest {
 
     @TestFactory
+    Stream<DynamicTest> shouldResolveClassOfSupportedCurrency() {
+        return TypedCurrency.supportedCurrencies()
+          .stream()
+          .map(ccy -> DynamicTest.dynamicTest(ccy.currency().getCurrencyCode(), () -> {
+              assertThat(TypedCurrency.from(ccy.currency().getCurrencyCode()))
+                .isExactlyInstanceOf(Class.forName("com.pivovarit.typesafe.fx.currency.%s".formatted(ccy.getClass().getSimpleName())));
+          }));
+    }
+
+    @TestFactory
     Stream<DynamicTest> shouldSupportAllIsoCurrencies() {
         return Currency.getAvailableCurrencies()
           .stream()

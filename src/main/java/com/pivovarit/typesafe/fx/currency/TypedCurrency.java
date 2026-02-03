@@ -1,6 +1,7 @@
 package com.pivovarit.typesafe.fx.currency;
 
 import java.util.Currency;
+import java.util.Objects;
 import java.util.Set;
 
 public interface TypedCurrency {
@@ -24,6 +25,11 @@ public interface TypedCurrency {
             case "CHF" -> CHF;
             case "GBP" -> GBP;
             case "PLN" -> PLN;
+            case "CAD" -> CAD;
+            case "CZK" -> CZK;
+            case "HKD" -> HKD;
+            case "HUF" -> HUF;
+            case "ILS" -> ILS;
             default -> new ISOCurrency(Currency.getInstance(code));
         };
     }
@@ -33,5 +39,13 @@ public interface TypedCurrency {
     }
 
     record ISOCurrency(Currency currency) implements TypedCurrency {
+        public ISOCurrency {
+            Objects.requireNonNull(currency, "currency can't be null");
+        }
+
+        @Override
+        public String toString() {
+            return currency.toString();
+        }
     }
 }
