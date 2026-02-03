@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MarkToMarketTest {
 
     @Test
-    void example_1() {
+    void shouldCalculateForForwardRates() {
         FxRate<USD, PLN> bookedRate = FxRate.from("4", TypedCurrency.USD, TypedCurrency.PLN);
         FxRate<USD, PLN> marketRate = FxRate.from("3.5", TypedCurrency.USD, TypedCurrency.PLN);
 
@@ -30,7 +30,7 @@ class MarkToMarketTest {
     }
 
     @Test
-    void example_2() {
+    void shouldCalculateForSpotRates() {
         LocalDate valueDate = LocalDate.parse("2020-01-01");
         FxForwardRate<USD, PLN> bookedRate = FxForwardRate.from(new BigDecimal("4"), TypedCurrency.USD, TypedCurrency.PLN, valueDate);
         FxForwardRate<USD, PLN> marketRate = FxForwardRate.from(new BigDecimal("3.5"), TypedCurrency.USD, TypedCurrency.PLN, valueDate);
