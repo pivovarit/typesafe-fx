@@ -17,7 +17,7 @@ class BigRationalDivisionPrecisionTest {
     private static final BigDecimal THREE_BD = BigDecimal.valueOf(3);
 
     @Nested
-    class BigDecimalTests {
+    class BigRationalTests {
 
         @Test
         void repeatedDivisionShouldBeExact() {
@@ -48,7 +48,7 @@ class BigRationalDivisionPrecisionTest {
     }
 
     @Nested
-    class BigRationalTests {
+    class BigDecimalTests {
 
         @Test
         void divideManyTimesThenMultiplyBackShouldAccumulateRoundingError() {
