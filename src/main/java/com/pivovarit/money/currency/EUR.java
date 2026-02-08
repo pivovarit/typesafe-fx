@@ -1,0 +1,22 @@
+package com.pivovarit.money.currency;
+
+import java.util.Currency;
+import java.util.Objects;
+
+public record EUR(Currency currency) implements TypedCurrency {
+    public EUR {
+        Objects.requireNonNull(currency, "Currency cannot be null");
+        if (!currency.getCurrencyCode().equals("EUR")) {
+            throw new IllegalArgumentException("Currency must be EUR");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return currency.toString();
+    }
+
+    public static EUR instance() {
+        return TypedCurrency.EUR;
+    }
+}
