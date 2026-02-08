@@ -1,12 +1,11 @@
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-module com.pivovarit.typesafe.fx {
-    exports com.pivovarit.typesafe.fx;
-    exports com.pivovarit.typesafe.fx.currency;
-    exports com.pivovarit.typesafe.fx.rate;
-    exports com.pivovarit.typesafe.fx.analytics;
-    exports com.pivovarit.typesafe.fx.math;
+module com.pivovarit.money {
+    exports com.pivovarit.money;
+    exports com.pivovarit.money.currency;
+    exports com.pivovarit.money.rate;
+    exports com.pivovarit.money.math;
 
     requires static org.jspecify;
 }

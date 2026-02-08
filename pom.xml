@@ -12,19 +12,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.pivovarit</groupId>
-    <artifactId>typesafe-fx</artifactId>
+    <artifactId>typed-money</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <url>https://github.com/pivovarit/typesafe-fx</url>
+    <url>https://github.com/pivovarit/typed-money</url>
 
     <packaging>jar</packaging>
 
-    <name>typesafe-fx</name>
+    <name>typed-money</name>
     <description>A type-safe FX/money toolkit for Java</description>
 
     <scm>
-        <url>https://github.com/pivovarit/typesafe-fx</url>
-        <connection>scm:git:git@github.com:pivovarit/typesafe-fx.git</connection>
-        <developerConnection>scm:git:git@github.com:pivovarit/typesafe-fx.git</developerConnection>
+        <url>https://github.com/pivovarit/typed-money</url>
+        <connection>scm:git:git@github.com:pivovarit/typed-money.git</connection>
+        <developerConnection>scm:git:git@github.com:pivovarit/typed-money.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -133,7 +133,7 @@
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/pivovarit/typesafe-fx/issues</url>
+        <url>https://github.com/pivovarit/typed-money/issues</url>
     </issueManagement>
 
     <developers>
