@@ -1,6 +1,5 @@
 package com.pivovarit.money.rate;
 
-import com.pivovarit.money.DirectionalCurrencyPair;
 import com.pivovarit.money.Money;
 import com.pivovarit.money.currency.TypedCurrency;
 import com.pivovarit.money.math.BigRational;
@@ -25,24 +24,12 @@ public record Rate<F extends TypedCurrency, T extends TypedCurrency>(F from, T t
         return new Rate<>(from, to, BigRational.of(rate));
     }
 
-    public static <T extends TypedCurrency, R extends TypedCurrency> Rate<T, R> from(String rate, DirectionalCurrencyPair<T, R> pair) {
-        return new Rate<>(pair.sell(), pair.buy(), BigRational.of(rate));
-    }
-
     public static <T extends TypedCurrency, R extends TypedCurrency> Rate<T, R> from(BigDecimal rate, T from, R to) {
         return new Rate<>(from, to, BigRational.of(rate));
     }
 
-    public static <T extends TypedCurrency, R extends TypedCurrency> Rate<T, R> from(BigDecimal rate, DirectionalCurrencyPair<T, R> pair) {
-        return new Rate<>(pair.sell(), pair.buy(), BigRational.of(rate));
-    }
-
     public static <T extends TypedCurrency, R extends TypedCurrency> Rate<T, R> from(BigRational rate, T from, R to) {
         return new Rate<>(from, to, rate);
-    }
-
-    public static <T extends TypedCurrency, R extends TypedCurrency> Rate<T, R> from(BigRational rate, DirectionalCurrencyPair<T, R> pair) {
-        return new Rate<>(pair.sell(), pair.buy(), rate);
     }
 
     @Override
