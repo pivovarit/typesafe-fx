@@ -14,8 +14,6 @@ import com.pivovarit.money.currency.USD;
 import com.pivovarit.money.math.BigRational;
 import com.pivovarit.money.math.Decimal;
 import com.pivovarit.money.math.Rounding;
-import com.pivovarit.money.rate.ForwardRate;
-import com.pivovarit.money.rate.Rate;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -93,11 +91,7 @@ public record Money<T extends TypedCurrency>(BigRational amount, T currency) {
         return from(amount.multiply(factor), currency);
     }
 
-    public <R extends TypedCurrency> Money<R> convert(ForwardRate<T, R> rate) {
-        return rate.exchange(this);
-    }
-
-    public <R extends TypedCurrency> Money<R> convert(Rate<T, R> rate) {
+    public <R extends TypedCurrency> Money<R> convert(ConversionRate<T, R> rate) {
         return rate.exchange(this);
     }
 

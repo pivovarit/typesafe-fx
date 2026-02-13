@@ -1,5 +1,6 @@
 package com.pivovarit.money.rate;
 
+import com.pivovarit.money.ConversionRate;
 import com.pivovarit.money.Money;
 import com.pivovarit.money.currency.PLN;
 import com.pivovarit.money.currency.TypedCurrency;
@@ -12,12 +13,12 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class RateTest {
+class ConversionRateTest {
 
     @Test
     void shouldInvert() {
-        Rate<USD, PLN> rate = Rate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
-        Rate<PLN, USD> inverted = rate.invert();
+        ConversionRate<USD, PLN> rate = ConversionRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
+        ConversionRate<PLN, USD> inverted = rate.invert();
 
         assertThat(inverted.from().equals(rate.to())).isTrue();
         assertThat(inverted.to().equals(rate.from())).isTrue();
@@ -27,7 +28,7 @@ class RateTest {
     @Test
     void shouldConvert() {
         Money<USD> money = Money.from("1000", TypedCurrency.USD);
-        Rate<USD, PLN> rate = Rate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
+        ConversionRate<USD, PLN> rate = ConversionRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 
         Money<PLN> converted = rate.exchange(money);
         assertThat(converted.amount()).isEqualTo(BigRational.of(new BigDecimal("4000.00")));
@@ -37,7 +38,7 @@ class RateTest {
     @Test
     void shouldConvertUnsafeTypedCurrency() {
         Money<TypedCurrency> money = Money.from("1000", TypedCurrency.from("USD"));
-        Rate<USD, PLN> usdPlnRate = Rate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
+        ConversionRate<USD, PLN> usdPlnRate = ConversionRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 
         Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
         assertThat(converted.amount()).isEqualTo(BigRational.of(new BigDecimal("4000.00")));
@@ -47,7 +48,7 @@ class RateTest {
     @Test
     void shouldConvertUnsafeWildcard() {
         Money<?> money = Money.from("1000", TypedCurrency.from("USD"));
-        Rate<USD, PLN> usdPlnRate = Rate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
+        ConversionRate<USD, PLN> usdPlnRate = ConversionRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 
         Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
         assertThat(converted.amount()).isEqualTo(BigRational.of(new BigDecimal("4000.00")));
@@ -57,7 +58,7 @@ class RateTest {
     @Test
     void shouldFailConvertUnsafe() {
         Money<TypedCurrency> money = Money.from("1000", TypedCurrency.from("EUR"));
-        Rate<USD, PLN> usdPlnRate = Rate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
+        ConversionRate<USD, PLN> usdPlnRate = ConversionRate.from("4.00", TypedCurrency.USD, TypedCurrency.PLN);
 
         assertThatThrownBy(() -> {
             Money<PLN> converted = usdPlnRate.exchangeOrThrow(money);
