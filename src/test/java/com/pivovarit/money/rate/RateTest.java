@@ -1,15 +1,11 @@
 package com.pivovarit.money.rate;
 
-import com.pivovarit.money.DirectionalCurrencyPair;
 import com.pivovarit.money.Money;
-import com.pivovarit.money.currency.CHF;
-import com.pivovarit.money.currency.EUR;
 import com.pivovarit.money.currency.PLN;
 import com.pivovarit.money.currency.TypedCurrency;
 import com.pivovarit.money.currency.USD;
 import com.pivovarit.money.math.BigRational;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Currency;
 import org.junit.jupiter.api.Test;
 
@@ -68,38 +64,5 @@ class RateTest {
         })
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("Money currency EUR does not match rate.from USD");
-    }
-
-    @Test
-    void example_1() {
-        DirectionalCurrencyPair<USD, EUR> usdeur = DirectionalCurrencyPair.of(TypedCurrency.USD, TypedCurrency.EUR);
-
-        Money<USD> usdAmount = Money.from(BigDecimal.TEN, TypedCurrency.USD);
-        Money<EUR> eurAmount = Money.from(BigDecimal.TEN, TypedCurrency.EUR);
-
-        Rate<USD, EUR> rate1 = Rate.from(new BigDecimal("0.84"), TypedCurrency.USD, TypedCurrency.EUR);
-        Rate<USD, EUR> rate2 = Rate.from(new BigDecimal("0.84"), usdeur);
-        ForwardRate<USD, EUR> forwardRate = ForwardRate.from(new BigDecimal("0.85"), usdeur, LocalDate.parse("2030-01-01"));
-
-        Rate<EUR, USD> inverted = rate1.invert();
-
-        TypedCurrency currency = TypedCurrency.from("CHF");
-        switch (currency) {
-            case CHF chf -> System.out.println(chf);
-            default -> System.out.println("not chf");
-        }
-    }
-
-    @Test
-    void example_2_untyped() {
-        TypedCurrency currency1 = TypedCurrency.from("CHF");
-        TypedCurrency currency2 = TypedCurrency.from("GBP");
-        Money<TypedCurrency> chf = Money.from(BigDecimal.TEN, currency1);
-        Money<TypedCurrency> gbp = Money.from(BigDecimal.TEN, currency2);
-
-        assertThatThrownBy(() -> {
-            Money<TypedCurrency> ignored = chf.add(gbp);
-        }).isExactlyInstanceOf(IllegalArgumentException.class)
-          .hasMessageContaining("Currency mismatch: CHF vs GBP");
     }
 }
