@@ -22,9 +22,7 @@ Instead of representing money as `(BigDecimal, Currency)` and hoping to not acci
 - `TypedCurrency` - a type-safe representation of a currency (reified as a Java type)
 - `Money<EUR>` - money *in* a specific currency type
 - `BigRational` - exact rational arithmetic with deterministic rounding and `BigDecimal` conversion helpers
-- `Rate<EUR, USD>` - a rate that can only exchange `Money<EUR>` into `Money<USD>`
-- `ForwardRate<EUR, USD>` - same as above, but for a specific value date
-- `DirectionalCurrencyPair<SELL, BUY>` - a typed pair (`USD/EUR`, `EUR/USD`, etc.)
+- `ConversionRate<EUR, USD>` - a rate that can only exchange `Money<EUR>` into `Money<USD>`
 
 **Goal:** push currency correctness into the type system (as far as Java generics allow) while staying ergonomic.
 
@@ -34,12 +32,10 @@ DirectionalCurrencyPair<USD, EUR> usdeur = DirectionalCurrencyPair.of(TypedCurre
 Money<USD> usdAmount = Money.from(BigDecimal.TEN, TypedCurrency.USD);
 Money<EUR> eurAmount = Money.from(BigDecimal.TEN, TypedCurrency.EUR);
 
-Rate<USD, EUR> rate1 = Rate.from(new BigDecimal("0.84"), TypedCurrency.USD, TypedCurrency.EUR);
-Rate<USD, EUR> rate2 = Rate.from(new BigDecimal("0.84"), usdeur);
+ConversionRate<USD, EUR> rate1 = Rate.from(new BigDecimal("0.84"), TypedCurrency.USD, TypedCurrency.EUR);
+ConversionRate<USD, EUR> rate2 = Rate.from(new BigDecimal("0.84"), usdeur);
 
-ForwardRate<USD, EUR> forwardRate = ForwardRate.from(new BigDecimal("0.85"), usdeur, LocalDate.parse("2030-01-01"));
-
-Rate<EUR, USD> inverted = rate1.invert();
+ConversionRate<EUR, USD> inverted = rate1.invert();
 
 TypedCurrency currency = TypedCurrency.from("CHF");
 switch (currency) {

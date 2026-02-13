@@ -1,17 +1,15 @@
-package com.pivovarit.money.rate;
+package com.pivovarit.money;
 
-import com.pivovarit.money.Money;
 import com.pivovarit.money.currency.TypedCurrency;
 import com.pivovarit.money.math.BigRational;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
- * Typed exchange rate: {@code Rate<F, T>} exchanges {@code Money<F>} -> {@code Money<T>}.
+ * Typed exchange rate: {@code ConversionRate<F, T>} exchanges {@code Money<F>} -> {@code Money<T>}.
  */
-public record Rate<F extends TypedCurrency, T extends TypedCurrency>(F from, T to, BigRational rate)
-  implements ExchangeRate<F, T> {
-    public Rate {
+public record ConversionRate<F extends TypedCurrency, T extends TypedCurrency>(F from, T to, BigRational rate) {
+    public ConversionRate {
         Objects.requireNonNull(from, "from");
         Objects.requireNonNull(to, "to");
         Objects.requireNonNull(rate, "rate");
@@ -20,19 +18,18 @@ public record Rate<F extends TypedCurrency, T extends TypedCurrency>(F from, T t
         }
     }
 
-    public static <T extends TypedCurrency, R extends TypedCurrency> Rate<T, R> from(String rate, T from, R to) {
-        return new Rate<>(from, to, BigRational.of(rate));
+    public static <T extends TypedCurrency, R extends TypedCurrency> ConversionRate<T, R> from(String rate, T from, R to) {
+        return new ConversionRate<>(from, to, BigRational.of(rate));
     }
 
-    public static <T extends TypedCurrency, R extends TypedCurrency> Rate<T, R> from(BigDecimal rate, T from, R to) {
-        return new Rate<>(from, to, BigRational.of(rate));
+    public static <T extends TypedCurrency, R extends TypedCurrency> ConversionRate<T, R> from(BigDecimal rate, T from, R to) {
+        return new ConversionRate<>(from, to, BigRational.of(rate));
     }
 
-    public static <T extends TypedCurrency, R extends TypedCurrency> Rate<T, R> from(BigRational rate, T from, R to) {
-        return new Rate<>(from, to, rate);
+    public static <T extends TypedCurrency, R extends TypedCurrency> ConversionRate<T, R> from(BigRational rate, T from, R to) {
+        return new ConversionRate<>(from, to, rate);
     }
 
-    @Override
     public Money<T> exchangeOrThrow(Money<?> money) {
         Objects.requireNonNull(money, "money");
         if (money.currency() != from) {
@@ -41,7 +38,6 @@ public record Rate<F extends TypedCurrency, T extends TypedCurrency>(F from, T t
         return new Money<>(money.amount().multiply(rate), to);
     }
 
-    @Override
     public Money<T> exchange(Money<F> money) {
         Objects.requireNonNull(money, "money");
         if (money.currency() != from) {
@@ -50,13 +46,13 @@ public record Rate<F extends TypedCurrency, T extends TypedCurrency>(F from, T t
         return new Money<>(money.amount().multiply(rate), to);
     }
 
-    public Rate<T, F> invert() {
-        return new Rate<>(to, from, rate.inverse());
+    public ConversionRate<T, F> invert() {
+        return new ConversionRate<>(to, from, rate.inverse());
     }
 
-    public static <A extends TypedCurrency, B extends TypedCurrency, C extends TypedCurrency> Rate<A, C> compose(Rate<A, B> ab, Rate<B, C> bc) {
+    public static <A extends TypedCurrency, B extends TypedCurrency, C extends TypedCurrency> ConversionRate<A, C> compose(ConversionRate<A, B> ab, ConversionRate<B, C> bc) {
         Objects.requireNonNull(ab, "ab");
         Objects.requireNonNull(bc, "bc");
-        return new Rate<>(ab.from, bc.to, ab.rate.multiply(bc.rate));
+        return new ConversionRate<>(ab.from, bc.to, ab.rate.multiply(bc.rate));
     }
 }
